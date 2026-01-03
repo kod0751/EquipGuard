@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -120,4 +120,29 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@font-face {
+  font-family: 'NanumSquareNeoLight';
+  src: url('../app/style/fonts/NanumSquareNeo-aLt.ttf');
+}
+
+@font-face {
+  font-family: 'NanumSquareNeo';
+  src: url('../app/style/fonts/NanumSquareNeo-bRg.ttf');
+}
+
+@font-face {
+  font-family: 'NanumSquareNeoBold';
+  src: url('../app/style/fonts/NanumSquareNeo-cBd.ttf');
+}
+
+@font-face {
+  font-family: 'NanumSquareNeoExtraBold';
+  src: url('../app/style/fonts/NanumSquareNeo-dEb.ttf');
+}
+
+@font-face {
+  font-family: 'NanumSquareNeoHeavy';
+  src: url('../app/style/fonts/NanumSquareNeo-eHv.ttf');
 }
