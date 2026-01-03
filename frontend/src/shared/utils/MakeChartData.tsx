@@ -15,9 +15,9 @@ const STATUS_COLOR: Record<StatusName, string> = {
   정상: 'oklch(72.3% 0.219 149.579)',
 };
 
-function getStatusByWear(expectedWear: number): StatusName {
-  if (expectedWear >= 0.75) return '긴급';
-  if (expectedWear >= 0.5) return '주의';
+function getStatusByError(expectedError: number): StatusName {
+  if (expectedError >= 0.75) return '긴급';
+  if (expectedError >= 0.5) return '주의';
   return '정상';
 }
 
@@ -29,7 +29,7 @@ export function MakeChartData(equipments: Equipment[]): ChartData[] {
   };
 
   equipments.forEach((equipment) => {
-    const status = getStatusByWear(equipment.expectedWear ?? 0);
+    const status = getStatusByError(equipment.expectedError ?? 0);
     countMap[status] += 1;
   });
 

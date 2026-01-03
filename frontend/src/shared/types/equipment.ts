@@ -14,7 +14,7 @@ export interface FailurePrediction {
 export interface Equipment {
   id: string;
   type: EquipmentType;
-  expectedWear?: number; // 0 ~ 1
+  expectedError?: number; // 0 ~ 1
   status?: EquipmentStatus;
   air_temp: number;
   process_temp: number;

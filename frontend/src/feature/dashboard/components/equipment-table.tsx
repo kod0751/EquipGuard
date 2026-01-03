@@ -5,7 +5,7 @@ import {
   AVATAR_STYLE_MAP,
   STATUS_STYLE_MAP,
 } from '../constants/equipmennt-styles';
-import { getWearColor } from '@/shared/constants/wear';
+import { getErrorColor } from '@/shared/constants/wear';
 
 export function EquipmentTable() {
   return (
@@ -38,7 +38,7 @@ export function EquipmentTable() {
 
           <tbody>
             {equipmentMockData.map((equipment) => {
-              const percent = Math.round((equipment.expectedWear ?? 0) * 100);
+              const percent = Math.round((equipment.expectedError ?? 0) * 100);
 
               return (
                 <tr key={equipment.id} className="border-b last:border-0">
@@ -66,7 +66,7 @@ export function EquipmentTable() {
                     <div className="flex items-center gap-2">
                       <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden max-w-30">
                         <div
-                          className={`h-full ${getWearColor(percent)}`}
+                          className={`h-full ${getErrorColor(percent)}`}
                           style={{ width: `${percent}%` }}
                         />
                       </div>
