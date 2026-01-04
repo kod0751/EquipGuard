@@ -2,7 +2,6 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
   AlertTriangle,
-  X,
   Lightbulb,
   CheckCircle2,
   Flame,
@@ -24,8 +23,39 @@ const riskVariantMap = {
   정상: 'normal',
 } as const;
 
+const getRecommendedAction = (riskStatus: string) => {
+  const actions = {
+    긴급: {
+      icon: AlertTriangle,
+      iconColor: 'text-red-500',
+      bgColor: 'bg-red-500/10',
+      title: '즉시 점검 필요',
+      description: '설비 가동 중단 후 긴급 점검이 필요합니다',
+    },
+    주의: {
+      icon: AlertTriangle,
+      iconColor: 'text-yellow-500',
+      bgColor: 'bg-yellow-500/10',
+      title: '정기 점검 권장',
+      description: '가까운 시일 내 점검을 권장합니다',
+    },
+    정상: {
+      icon: CheckCircle2,
+      iconColor: 'text-green-500',
+      bgColor: 'bg-green-500/10',
+      title: '정상 작동 중',
+      description: '설비가 정상적으로 작동하고 있습니다',
+    },
+  };
+
+  return actions[riskStatus as keyof typeof actions] || actions.정상;
+};
+
 export default function PredictionResult({ equipment }: PredictionResultProps) {
   const failureRate = (equipment.expectedError ?? 0) * 100;
+  const riskStatus = getRiskStatus(equipment);
+  const action = getRecommendedAction(riskStatus);
+  const ActionIcon = action.icon;
 
   return (
     <div className="space-y-6">
@@ -63,12 +93,17 @@ export default function PredictionResult({ equipment }: PredictionResultProps) {
         {/* 권장 조치 */}
         <Card className="p-6">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center shrink-0">
-              <X className="w-6 h-6 text-teal-500" />
+            <div
+              className={`w-12 h-12 rounded-xl ${action.bgColor} flex items-center justify-center shrink-0`}
+            >
+              <ActionIcon className={`w-6 h-6 ${action.iconColor}`} />
             </div>
             <div className="flex-1">
               <p className="text-sm text-muted-foreground mb-1">권장 조치</p>
-              <p className="text-2xl font-bold mb-1">정기 점검 권장</p>
+              <p className="text-2xl font-bold mb-1">{action.title}</p>
+              <p className="text-sm text-muted-foreground">
+                {action.description}
+              </p>
             </div>
           </div>
         </Card>
