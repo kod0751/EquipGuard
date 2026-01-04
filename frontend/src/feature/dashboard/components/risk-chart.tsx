@@ -3,11 +3,11 @@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card } from '@/components/ui/card';
 import { equipmentMockData } from '@/shared/constants/equipment-mock';
-import { MakeChartData } from '@/shared/utils/MakeChartData';
+import { EquipmentData } from '@/shared/utils/EquipmentData';
 import { AlertCircle } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
-const ChartData = MakeChartData(equipmentMockData);
+const ChartData = EquipmentData(equipmentMockData);
 
 export function RiskChart() {
   return (

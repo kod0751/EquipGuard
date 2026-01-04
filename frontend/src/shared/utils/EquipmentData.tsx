@@ -21,7 +21,7 @@ function getStatusByError(expectedError: number): StatusName {
   return '정상';
 }
 
-export function MakeChartData(equipments: Equipment[]): ChartData[] {
+export function EquipmentData(equipments: Equipment[]): ChartData[] {
   const countMap: Record<StatusName, number> = {
     긴급: 0,
     주의: 0,
