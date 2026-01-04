@@ -91,4 +91,14 @@ export const equipmentMockData: Equipment[] = [
       { type: 'HDF', probability: 4.6 },
     ],
   },
+  {
+    id: 'L47186',
+    type: '대형 설비',
+    status: '정상',
+    air_temp: 305.0,
+    process_temp: 310.0,
+    rpm: 1450,
+    torque: 28.0,
+    tool_wear: 130,
+  },
 ];

@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   AVATAR_STYLE_MAP,
   STATUS_STYLE_MAP,
-} from '@/feature/dashboard/constants/equipmennt-styles';
+} from '@/features/dashboard/constants/equipmennt-styles';
 import { equipmentMockData } from '@/shared/constants/equipment-mock';
 import { getErrorColor, getRiskStatus } from '@/shared/constants/wear';
 import { Eye, Pencil, Trash2, ArrowUpDown } from 'lucide-react';

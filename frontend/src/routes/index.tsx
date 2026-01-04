@@ -1,9 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from '@/shared/components/layout/AppLayout';
 
-import { DashboardPage } from '@/feature/dashboard';
-import { EquipmentList } from '@/feature/equipment';
-import { PredictionPage } from '@/feature/prediction';
+import { DashboardPage } from '@/features/dashboard';
+import { EquipmentList } from '@/features/equipment';
+import { PredictionPage } from '@/features/prediction';
 
 export default function AppRoutes() {
   return (
