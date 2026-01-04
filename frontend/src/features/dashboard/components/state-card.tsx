@@ -1,17 +1,22 @@
 import { Card } from '@/components/ui/card';
-import { equipmentMockData } from '@/shared/constants/equipment-mock';
 import {
   calcEquipmentStatus,
   EQUIPMENT_STATUS,
 } from '../constants/equipment-status';
+import { useEquipmentListQuery } from '@/shared/api/equipment.query';
 
 export function StateCard() {
-  const kpis = calcEquipmentStatus(equipmentMockData);
+  const { data, isLoading, error } = useEquipmentListQuery();
+
+  if (isLoading) return <div>로딩중...</div>;
+  if (error) return <div>데이터를 불러올 수 없습니다.</div>;
+
+  const equipmentStatus = calcEquipmentStatus(data ?? []);
 
   return (
     <section>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {Object.entries(kpis).map(([key, value]) => {
+        {Object.entries(equipmentStatus).map(([key, value]) => {
           const status = EQUIPMENT_STATUS[key as keyof typeof EQUIPMENT_STATUS];
           const Icon = status.icon;
 
