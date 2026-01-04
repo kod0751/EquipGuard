@@ -12,10 +12,17 @@ import {
 } from 'lucide-react';
 import type { Equipment } from '@/shared/types/equipment';
 import { InputDataCard } from './input-data-card';
+import { getRiskStatus } from '@/shared/constants/wear';
 
 interface PredictionResultProps {
   equipment: Equipment;
 }
+
+const riskVariantMap = {
+  긴급: 'urgent',
+  주의: 'warning',
+  정상: 'normal',
+} as const;
 
 export default function PredictionResult({ equipment }: PredictionResultProps) {
   const failureRate = (equipment.expectedError ?? 0) * 100;
@@ -31,10 +38,10 @@ export default function PredictionResult({ equipment }: PredictionResultProps) {
             </h2>
           </div>
           <Badge
-            variant="outline"
-            className="bg-yellow-500/10 text-yellow-700 border-yellow-300 px-4 py-2 text-base"
+            variant={riskVariantMap[getRiskStatus(equipment)]}
+            className="px-4 py-2 text-base"
           >
-            위험도: 주의
+            위험도: {getRiskStatus(equipment)}
           </Badge>
         </div>
       </Card>
