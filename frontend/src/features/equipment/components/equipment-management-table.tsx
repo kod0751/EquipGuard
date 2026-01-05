@@ -209,6 +209,7 @@ export function EquipmentManagementTable({
   };
 
   return (
+    <section className='p-8 pt-0'>
     <div className="bg-card rounded-xl border border-border overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
@@ -266,5 +267,6 @@ export function EquipmentManagementTable({
         </table>
       </div>
     </div>
+    </section>
   );
 }

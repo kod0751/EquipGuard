@@ -44,6 +44,7 @@ export function EquipmentFilterTabs({
   }, []);
 
   return (
+    <section className='p-8'>
     <div className="bg-card rounded-xl border border-border p-6">
       <div className="flex items-center gap-2">
         {/* 탭 버튼들 */}
@@ -76,5 +77,6 @@ export function EquipmentFilterTabs({
         </div>
       </div>
     </div>
+    </section>
   );
 }

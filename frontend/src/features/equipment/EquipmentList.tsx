@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { StateCard } from '../dashboard/components/state-card';
 import { EquipmentFilterTabs } from './components/equipment-filter';
 import { EquipmentManagementTable } from './components/equipment-management-table';
+import EquipmentHeader from './components/equipment-header';
 
 export default function EquipmentList() {
   // 필터 상태: 'all', 'normal', 'warning', 'critical' 중 하나
@@ -13,7 +14,8 @@ export default function EquipmentList() {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <main className="flex-1 overflow-y-auto space-y-6">
+    <>
+      <EquipmentHeader />
       <StateCard />
       <EquipmentFilterTabs
         activeTab={activeFilter}
@@ -25,6 +27,6 @@ export default function EquipmentList() {
         filter={activeFilter}
         searchQuery={searchQuery}
       />
-    </main>
+    </>
   );
 }
