@@ -16,7 +16,7 @@ import {
   STATUS_STYLE_MAP,
 } from '@/features/dashboard/constants/equipmennt-styles';
 import { equipmentMockData } from '@/shared/constants/equipment-mock';
-import { getErrorColor, getRiskStatus } from '@/shared/constants/wear';
+import { getErrorColor } from '@/shared/constants/wear';
 import { Eye, Pencil, Trash2, ArrowUpDown } from 'lucide-react';
 
 type Equipment = (typeof equipmentMockData)[number];
@@ -98,14 +98,16 @@ export function EquipmentManagementTable({
       columnHelper.accessor('status', {
         header: '상태',
         cell: (info) => {
-          const equipment = info.row.original;
-          const riskStatus = getRiskStatus(equipment);
-          return (
-            <span className={`text-sm ${STATUS_STYLE_MAP[riskStatus]}`}>
-              {info.getValue()}
-            </span>
-          );
-        },
+    const status = info.getValue();
+
+    if (!status) return null;
+
+    return (
+      <span className={`text-sm ${STATUS_STYLE_MAP[status]}`}>
+        {status}
+      </span>
+    );
+  },
       }),
 
       columnHelper.accessor('expectedError', {

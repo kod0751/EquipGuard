@@ -78,11 +78,11 @@ export function EquipmentTable() {
 
                   {/* 상태 */}
                   <td className="py-4 px-2">
-                    <span
-                      className={STATUS_STYLE_MAP[equipment.status ?? '정상']}
-                    >
-                      {equipment.status}
-                    </span>
+                    {equipment.status && (
+                      <span className={STATUS_STYLE_MAP[equipment.status]}>
+                        {equipment.status}
+                      </span>
+                    )}
                   </td>
                 </tr>
               );
