@@ -26,18 +26,21 @@ const headerConfig = {
     subtitle: '기기 상태 모니터링',
     icon: Download,
     label: '리포트 다운로드',
+    showAction: false,
   },
   '/equipment': {
     title: '설비 관리',
     subtitle: '전체 설비 현황 및 상태 관리',
     icon: Plus,
     label: '설비 추가',
+    showAction: true,
   },
   '/prediction': {
     title: '설비 고장 예측',
     subtitle: 'AI 기반 고장 예측 분석',
     icon: TrendingUp,
     label: '예측 실행',
+    showAction: true,
   },
 } as const;
 
@@ -94,7 +97,7 @@ export default function Header({
           )}
 
           {/* 버튼 */}
-          {config && (
+          {config?.showAction && (
             <Button
               className="bg-teal-500 hover:bg-teal-600 text-white"
               disabled={isPredictionPage && !selectedEquipmentId}
