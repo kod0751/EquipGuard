@@ -94,7 +94,6 @@ export const equipmentMockData: Equipment[] = [
   {
     id: 'L47186',
     type: '대형 설비',
-    status: '정상',
     air_temp: 305.0,
     process_temp: 310.0,
     rpm: 1450,

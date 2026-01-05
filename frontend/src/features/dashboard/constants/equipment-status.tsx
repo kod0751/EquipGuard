@@ -9,6 +9,8 @@ import {
 /** 설비 상태 요약 Key */
 export type EquipmentStatKey = 'TOTAL' | 'NORMAL' | 'WARNING' | 'URGENT';
 
+type StatusName = '긴급' | '주의' | '정상';
+
 /** 설비 상태 카드 설정 */
 export const EQUIPMENT_STATUS: Record<
   EquipmentStatKey,
@@ -40,15 +42,23 @@ export const EQUIPMENT_STATUS: Record<
   },
 };
 
+function getStatusByError(expectedError: number): StatusName {
+  if (expectedError >= 0.75) return '긴급';
+  if (expectedError >= 0.5) return '주의';
+  return '정상';
+}
+
 /** 설비 상태 요약 계산 */
 export function calcEquipmentStatus(equipments: Equipment[]) {
   return equipments.reduce(
     (acc, cur) => {
       acc.TOTAL += 1;
 
-      if (cur.status === '정상') acc.NORMAL += 1;
-      if (cur.status === '주의') acc.WARNING += 1;
-      if (cur.status === '긴급') acc.URGENT += 1;
+      const status = getStatusByError(cur.expectedError ?? 0);
+
+      if (status === '정상') acc.NORMAL += 1;
+      if (status === '주의') acc.WARNING += 1;
+      if (status === '긴급') acc.URGENT += 1;
 
       return acc;
     },
