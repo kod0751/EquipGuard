@@ -1,7 +1,7 @@
 import * as z from 'zod';
 
 export const equipmentFormSchema = z.object({
-  id: z.string().min(1, '설비 ID를 입력해주세요.'),
+  assetId: z.string().min(1, '설비 ID를 입력해주세요.'),
   type: z.string().min(1, '설비 유형을 선택해주세요.'),
   air_temp: z.coerce.number().min(0, '온도를 입력해주세요.'),
   process_temp: z.coerce.number().min(0, '온도를 입력해주세요.'),

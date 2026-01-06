@@ -33,7 +33,7 @@ export function EquipmentAddModal({ open, onOpenChange }: EquipmentAddModalProps
     resolver: zodResolver(equipmentFormSchema),
     mode: 'onChange',
     defaultValues: {
-      id: '',
+      assetId: '',
       type: '',
       air_temp: 0,
       process_temp: 0,
@@ -60,7 +60,7 @@ export function EquipmentAddModal({ open, onOpenChange }: EquipmentAddModalProps
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="id"
+                name="assetId"
                 render={({ field }) => (
                   <FormItem className="col-span-2">
                     <FormLabel>설비 ID</FormLabel>
