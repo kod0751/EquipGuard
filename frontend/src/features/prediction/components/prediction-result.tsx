@@ -64,7 +64,7 @@ export default function PredictionResult({ equipment }: PredictionResultProps) {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold mb-1">
-              {equipment.type} {equipment.id}
+              {equipment.type} {equipment.assetId}
             </h2>
           </div>
           <Badge
