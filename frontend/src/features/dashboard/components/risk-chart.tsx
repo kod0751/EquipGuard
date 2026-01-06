@@ -2,14 +2,22 @@
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card } from '@/components/ui/card';
+import { useEquipmentListQuery } from '@/shared/api/equipment.query';
 import { equipmentMockData } from '@/shared/constants/equipment-mock';
 import { EquipmentData } from '@/shared/utils/EquipmentData';
 import { AlertCircle } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
-const ChartData = EquipmentData(equipmentMockData);
+
 
 export function RiskChart() {
+  const { data, isLoading, error } = useEquipmentListQuery();
+  
+    if (isLoading) return <div>로딩중...</div>;
+    if (error) return <div>데이터를 불러올 수 없습니다.</div>;
+
+  const EquipmentStatus = EquipmentData(data ?? []);
+
   return (
     <Card className="p-6">
       {/* 차트 제목 영역 */}
@@ -25,7 +33,7 @@ export function RiskChart() {
         <ResponsiveContainer width="100%" height={250}>
           <PieChart>
             <Pie
-              data={ChartData}
+              data={EquipmentStatus}
               cx="50%"
               cy="50%"
               innerRadius={80}
@@ -34,7 +42,7 @@ export function RiskChart() {
               cornerRadius={50}
               dataKey="value"
             >
-              {ChartData.map((entry, index) => (
+              {EquipmentStatus.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
@@ -56,7 +64,7 @@ export function RiskChart() {
 
       {/* 위험도별 설비 수 요약 리스트 */}
       <div className="space-y-3 mb-4">
-        {ChartData.map((item) => {
+        {EquipmentStatus.map((item) => {
           const percentage =
             equipmentMockData.length === 0
               ? 0
@@ -87,7 +95,7 @@ export function RiskChart() {
       </div>
 
       {/* 긴급 상태 설비가 존재할 경우 경고 알림 */}
-      {ChartData[0].value > 0 && (
+      {EquipmentStatus[0].value > 0 && (
         <Alert className="bg-destructive/10 border-destructive/20">
           <AlertCircle className="w-4 h-4 text-destructive" />
           <AlertDescription>
@@ -95,7 +103,7 @@ export function RiskChart() {
               긴급 조치 필요
             </span>
             <span className="text-destructive/90 text-xs">
-              긴급 상태 설비 {ChartData[0].value}대가 점검이 필요합니다.
+              긴급 상태 설비 {EquipmentStatus[0].value}대가 점검이 필요합니다.
             </span>
           </AlertDescription>
         </Alert>

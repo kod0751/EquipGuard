@@ -1,13 +1,18 @@
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
-import { equipmentMockData } from '@/shared/constants/equipment-mock';
 import {
   AVATAR_STYLE_MAP,
   STATUS_STYLE_MAP,
 } from '../constants/equipmennt-styles';
 import { getErrorColor } from '@/shared/constants/wear';
+import { useEquipmentListQuery } from '@/shared/api/equipment.query';
 
 export function EquipmentTable() {
+  const { data, isLoading, error } = useEquipmentListQuery();
+  
+    if (isLoading) return <div>로딩중...</div>;
+    if (error) return <div>데이터를 불러올 수 없습니다.</div>;
+
   return (
     <Card className="p-6">
       <div className="mb-6">
@@ -37,7 +42,7 @@ export function EquipmentTable() {
           </thead>
 
           <tbody>
-            {equipmentMockData.map((equipment) => {
+            {data?.map((equipment) => {
               const percent = Math.round((equipment.expectedError ?? 0) * 100);
 
               return (
