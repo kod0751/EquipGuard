@@ -46,7 +46,9 @@ export function EquipmentAddModal({ open, onOpenChange }: EquipmentAddModalProps
   const { mutate, isPending } = useCreateEquipmentMutation();
 
   const onSubmit = (values: EquipmentFormValues) => {
-    mutate(values);
+    mutate(values)
+    onOpenChange(false)
+    form.reset()
   };
 
   return (
