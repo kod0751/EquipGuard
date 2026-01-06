@@ -42,7 +42,7 @@ export default function PredictionHeader({
             <SelectTrigger className="w-52">
               <SelectValue placeholder="설비를 선택하세요" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='font-["NanumSquareNeo"]'>
               {equipmentList.map((equipment) => (
                 <SelectItem key={equipment.id} value={equipment.id}>
                   <div className="flex items-center gap-2">
