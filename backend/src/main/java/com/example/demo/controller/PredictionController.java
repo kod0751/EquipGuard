@@ -64,12 +64,5 @@ public class PredictionController {
         return ResponseEntity.ok().build();
     }
 
-    /**
-     * 🔹 테스트 데이터 생성 API (기존 유지)
-     */
-    @PostMapping("/test-data")
-    public ResponseEntity<String> initData() {
-        predictionService.insertTestData();
-        return ResponseEntity.ok("테스트 데이터가 생성되었습니다.");
-    }
+
 }
