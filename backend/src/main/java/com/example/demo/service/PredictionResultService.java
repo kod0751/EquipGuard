@@ -72,34 +72,5 @@ public class PredictionResultService {
         repository.deleteByAssetId(assetId);
     }
 
-    /**
-     * 🔹 테스트 데이터 삽입
-     */
-    public void insertTestData() {
-        String[][] assetInfo = {
-            {"M14860", "중형 설비"},
-            {"L47183", "대형 설비"},
-            {"L47184", "대형 설비"},
-            {"H31002", "고성능 설비"},
-            {"M14861", "중형 설비"}
-        };
-
-        for (String[] info : assetInfo) {
-    PredictionResult result = new PredictionResult();
-    result.setAssetId(info[0]);
-    
-    // 1. setAssetType -> setType 으로 변경
-    result.setType(info[1]);
-    
-    result.setStatus("정상");
-    
-    // 2. setExpectedWear -> setExpectedError 로 변경
-    result.setExpectedError(0.05); 
-    
-    // 나머지 실시간 데이터 초기화 (필요시 추가)
-    result.setPredictedAt(LocalDateTime.now());
-    
-    saveOrUpdate(result);
-}
-    }
+   
 }
