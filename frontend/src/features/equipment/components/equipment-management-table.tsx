@@ -18,6 +18,7 @@ import {
 import { equipmentMockData } from '@/shared/constants/equipment-mock';
 import { getErrorColor } from '@/shared/constants/wear';
 import { Eye, Pencil, Trash2, ArrowUpDown } from 'lucide-react';
+import { useEquipmentListQuery } from '@/shared/api/equipment.query';
 
 type Equipment = (typeof equipmentMockData)[number];
 
@@ -33,6 +34,10 @@ export function EquipmentManagementTable({
   filter,
   searchQuery,
 }: EquipmentManagementTableProps) {
+  const { data : equipmentData, isLoading, error } = useEquipmentListQuery();
+  
+
+  
   // 정렬 상태 관리
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -45,7 +50,7 @@ export function EquipmentManagementTable({
 
   // 필터링된 데이터
   const filteredData = useMemo(() => {
-    let data = equipmentMockData;
+    let data = equipmentData ?? [];
 
     // 상태 필터링
     if (filter !== 'all') {
@@ -67,7 +72,7 @@ export function EquipmentManagementTable({
     }
 
     return data;
-  }, [filter, searchQuery]);
+  }, [filter, searchQuery ,equipmentData]);
 
   const columns = useMemo(
     () => [
@@ -207,6 +212,9 @@ export function EquipmentManagementTable({
     console.log('Delete:', equipment);
     //TODO: 설비 삭제 확인 폼 열기
   };
+
+  if (isLoading) return <div>로딩중...</div>;
+  if (error) return <div>데이터를 불러올 수 없습니다.</div>;
 
   return (
     <section className='p-8 pt-0'>

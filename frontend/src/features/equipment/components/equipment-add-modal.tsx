@@ -43,20 +43,10 @@ export function EquipmentAddModal({ open, onOpenChange }: EquipmentAddModalProps
     },
   });
 
-// 커스텀 훅 사용
   const { mutate, isPending } = useCreateEquipmentMutation();
 
   const onSubmit = (values: EquipmentFormValues) => {
-    mutate(values, {
-      onSuccess: () => {
-        alert('설비가 추가되었습니다.');
-        onOpenChange(false); // 모달 닫기
-        form.reset();        // 폼 초기화
-      },
-      onError: () => {
-        alert('추가 실패!');
-      }
-    });
+    mutate(values);
   };
 
   return (

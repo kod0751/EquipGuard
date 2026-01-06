@@ -3,8 +3,8 @@
 import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { Search } from 'lucide-react';
-import { equipmentMockData } from '@/shared/constants/equipment-mock';
 import { EquipmentData } from '@/shared/utils/EquipmentData';
+import { useEquipmentListQuery } from '@/shared/api/equipment.query';
 
 interface EquipmentFilterTabsProps {
   activeTab: string;
@@ -19,8 +19,11 @@ export function EquipmentFilterTabs({
   searchQuery,
   onSearchChange,
 }: EquipmentFilterTabsProps) {
+
+  const { data, isLoading, error } = useEquipmentListQuery();
+
   const tabs = useMemo(() => {
-    const equipmentData = EquipmentData(equipmentMockData);
+    const equipmentData = EquipmentData(data ?? []);
 
     // 전체 개수 계산
     const totalCount = equipmentData.reduce((sum, item) => sum + item.value, 0);
@@ -41,7 +44,12 @@ export function EquipmentFilterTabs({
         count: item.value,
       })),
     ];
-  }, []);
+  }, [data]);
+
+    
+  if (isLoading) return <div>로딩중...</div>;
+  if (error) return <div>데이터를 불러올 수 없습니다.</div>;
+  
 
   return (
     <section className='p-8'>

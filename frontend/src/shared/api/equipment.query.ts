@@ -17,5 +17,8 @@ export const useCreateEquipmentMutation = () => {
       // 성공 시 'equipment' 리스트 데이터를 최신화하기 위해 캐시 무효화
       queryClient.invalidateQueries({ queryKey: equipmentKeys.list() });
     },
+    onError: (error) => {
+      console.error("설비 추가 중 오류 발생:", error);
+    }
   });
 };

@@ -2,7 +2,7 @@ import type { Equipment } from '../types/equipment';
 
 export const equipmentMockData: Equipment[] = [
   {
-    id: 'M14860',
+    assetId: 'M14860',
     type: '중형 설비',
     expectedError: 0.92, // 92%
     status: '긴급',
@@ -17,7 +17,7 @@ export const equipmentMockData: Equipment[] = [
     ],
   },
   {
-    id: 'L47183',
+    assetId: 'L47183',
     type: '대형 설비',
     expectedError: 0.9,
     status: '긴급',
@@ -32,7 +32,7 @@ export const equipmentMockData: Equipment[] = [
     ],
   },
   {
-    id: 'L47184',
+    assetId: 'L47184',
     type: '대형 설비',
     expectedError: 0.57,
     status: '주의',
@@ -47,7 +47,7 @@ export const equipmentMockData: Equipment[] = [
     ],
   },
   {
-    id: 'H31002',
+    assetId: 'H31002',
     type: '고성능 설비',
     expectedError: 0.19,
     status: '정상',
@@ -62,7 +62,7 @@ export const equipmentMockData: Equipment[] = [
     ],
   },
   {
-    id: 'M14861',
+    assetId: 'M14861',
     type: '중형 설비',
     expectedError: 0.03,
     status: '정상',
@@ -77,7 +77,7 @@ export const equipmentMockData: Equipment[] = [
     ],
   },
   {
-    id: 'L47185',
+    assetId: 'L47185',
     type: '대형 설비',
     expectedError: 0.41,
     status: '정상',
@@ -92,7 +92,7 @@ export const equipmentMockData: Equipment[] = [
     ],
   },
   {
-    id: 'L47186',
+    assetId: 'L47186',
     type: '대형 설비',
     air_temp: 305.0,
     process_temp: 310.0,
