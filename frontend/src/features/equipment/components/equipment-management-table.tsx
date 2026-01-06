@@ -60,7 +60,7 @@ export function EquipmentManagementTable({
       const query = searchQuery.toLowerCase();
       data = data.filter(
         (equipment) =>
-          equipment.id.toLowerCase().includes(query) ||
+          equipment.assetId.toLowerCase().includes(query) ||
           equipment.type.toLowerCase().includes(query) ||
           equipment.status?.toLowerCase().includes(query)
       );
@@ -71,7 +71,7 @@ export function EquipmentManagementTable({
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('id', {
+      columnHelper.accessor('assetId', {
         header: '설비 정보',
         cell: (info) => {
           const equipment = info.row.original;
@@ -79,7 +79,7 @@ export function EquipmentManagementTable({
             <div className="flex items-center gap-3">
               <Avatar className="w-9 h-9">
                 <AvatarFallback className={AVATAR_STYLE_MAP[equipment.type]}>
-                  {equipment.id.charAt(0)}
+                  {equipment.assetId.charAt(0)}
                 </AvatarFallback>
               </Avatar>
               <span className="font-semibold text-sm">{info.getValue()}</span>

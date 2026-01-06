@@ -12,7 +12,7 @@ export interface FailurePrediction {
 
 // ---------- DOMAIN ----------
 export interface Equipment {
-  id: string;
+  assetId: string;
   type: EquipmentType;
   expectedError?: number; // 0 ~ 1
   status?: EquipmentStatus;

@@ -44,9 +44,9 @@ export default function PredictionHeader({
             </SelectTrigger>
             <SelectContent className='font-["NanumSquareNeo"]'>
               {equipmentList.map((equipment) => (
-                <SelectItem key={equipment.id} value={equipment.id}>
+                <SelectItem key={equipment.assetId} value={equipment.assetId}>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium">{equipment.id}</span>
+                    <span className="font-medium">{equipment.assetId}</span>
                     <span className="text-xs text-muted-foreground">
                       ({equipment.type})
                     </span>

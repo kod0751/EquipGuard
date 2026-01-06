@@ -46,7 +46,7 @@ export function EquipmentTable() {
               const percent = Math.round((equipment.expectedError ?? 0) * 100);
 
               return (
-                <tr key={equipment.id} className="border-b last:border-0">
+                <tr key={equipment.assetId} className="border-b last:border-0">
                   {/* 설비 ID */}
                   <td className="py-4 px-2">
                     <div className="flex items-center gap-3">
@@ -54,11 +54,11 @@ export function EquipmentTable() {
                         <AvatarFallback
                           className={AVATAR_STYLE_MAP[equipment.type]}
                         >
-                          {equipment.id.charAt(0)}
+                          {equipment.assetId.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                       <span className="font-semibold text-sm">
-                        {equipment.id}
+                        {equipment.assetId}
                       </span>
                     </div>
                   </td>
