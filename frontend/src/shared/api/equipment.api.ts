@@ -1,12 +1,13 @@
 import type { Equipment } from '@/shared/types/equipment';
-import { equipmentMockData } from '../constants/equipment-mock';
 import type { EquipmentFormValues } from '@/features/equipment/schemas/equipment-schema';
+import { apiClient } from '../lib/axios';
+
+
 
 export const equipmentApi = {
   getList: async (): Promise<Equipment[]> => {
-    // mock이라 delay 흉내
-    await new Promise((r) => setTimeout(r, 500));
-    return equipmentMockData;
+    const { data } = await apiClient.get('/api/prediction/all-status');
+    return data;
   },
   create: async (data: EquipmentFormValues): Promise<void> => {
     await new Promise((r) => setTimeout(r, 500)); // API 지연 시뮬레이션
