@@ -3,7 +3,6 @@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card } from '@/components/ui/card';
 import { useEquipmentListQuery } from '@/shared/api/equipment.query';
-import { equipmentMockData } from '@/shared/constants/equipment-mock';
 import { EquipmentData } from '@/shared/utils/EquipmentData';
 import { AlertCircle } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
@@ -18,6 +17,9 @@ export function RiskChart() {
 
   const EquipmentStatus = EquipmentData(data ?? []);
 
+  const totalCount = EquipmentStatus.reduce((acc, cur) => acc + cur.value, 0);
+
+  console.log(EquipmentStatus)
   return (
     <Card className="p-6">
       {/* 차트 제목 영역 */}
@@ -57,7 +59,7 @@ export function RiskChart() {
 
         {/* 차트 중앙 전체 설비 수 표시 */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-          <div className="text-4xl font-bold">{equipmentMockData.length}</div>
+          <div className="text-4xl font-bold">{totalCount}</div>
           <div className="text-sm text-muted-foreground">전체 설비</div>
         </div>
       </div>
@@ -66,9 +68,9 @@ export function RiskChart() {
       <div className="space-y-3 mb-4">
         {EquipmentStatus.map((item) => {
           const percentage =
-            equipmentMockData.length === 0
+            totalCount === 0
               ? 0
-              : Math.round((item.value / equipmentMockData.length) * 100);
+              : Math.round((item.value / totalCount) * 100);
 
           return (
             <div key={item.name} className="flex items-center justify-between">

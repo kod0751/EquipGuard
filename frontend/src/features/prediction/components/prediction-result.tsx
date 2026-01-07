@@ -52,7 +52,7 @@ const getRecommendedAction = (riskStatus: string) => {
 };
 
 export default function PredictionResult({ equipment }: PredictionResultProps) {
-  const failureRate = (equipment.expectedError ?? 0) * 100;
+  const failureRate = (equipment.expected_error ?? 0) * 100;
   const riskStatus = getRiskStatus(equipment);
   const action = getRecommendedAction(riskStatus);
   const ActionIcon = action.icon;
@@ -158,7 +158,7 @@ export default function PredictionResult({ equipment }: PredictionResultProps) {
         <Card className="p-6">
           <h3 className="text-lg font-bold">고장 유형별 예측</h3>
           <div>
-            {equipment.failurePredictions?.map((prediction) => {
+            {equipment.failure_predictions?.map((prediction) => {
               const percent = prediction.probability;
 
               return (
