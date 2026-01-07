@@ -26,7 +26,12 @@ export const useCreateEquipmentMutation = () => {
 
 // 상세 분석 데이터 조회 (예측 실행 시 사용)
 export const usePredictMutation = () => {
+  const queryClient = useQueryClient(); // queryClient 추가
+
   return useMutation({
     mutationFn: (equipmentData: Equipment) => equipmentApi.analyze(equipmentData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: equipmentKeys.list() });
+    },
   });
 };
