@@ -1,47 +1,50 @@
 import { useState } from 'react';
-import type { Equipment } from '@/shared/types/equipment';
-
+import { useEquipmentListQuery, usePredictMutation } from '@/shared/api/equipment.query';
 import { PredictionEmpty } from './components/prediction-empty';
 import PredictionResult from './components/prediction-result';
 import PredictionHeader from './components/prediction-header';
-import { useEquipmentListQuery } from '@/shared/api/equipment.query';
+import { PredictionLoading } from './components/predcition-loading';
 
 export default function PredictionPage() {
-  const { data, isLoading, error } = useEquipmentListQuery();
-
-  const [selectedEquipmentId, setSelectedEquipmentId] = useState<string>('');
-  const [predictedEquipment, setPredictedEquipment] = useState<Equipment | null>(null);
+  const { data: equipmentList, isLoading: isListLoading } = useEquipmentListQuery(); //
+  const [selectedId, setSelectedId] = useState<string>('');
+  
+  const { 
+    mutate: predict, 
+    data: resultData, 
+    isPending: isAnalyzing 
+  } = usePredictMutation();
 
   const handlePredict = () => {
-    const equipment = data?.find(
-      (item) => item.assetId === selectedEquipmentId
-    );
-    if (equipment) {
-      setPredictedEquipment(equipment);
-    }
-  };
+  const selectedEquipment = equipmentList?.find(e => e.assetId === selectedId);
+  if (selectedEquipment) {
+    predict(selectedEquipment);
+  }
+  console.log(selectedEquipment)
+};
 
   const handleEquipmentChange = (id: string) => {
-    setSelectedEquipmentId(id);
-    setPredictedEquipment(null); // 설비 변경 시 예측 결과 초기화
+    setSelectedId(id);
+    // 선택 변경 시 이전 결과 초기화 로직은 필요에 따라 추가
   };
 
-  if (isLoading) return <div>로딩중...</div>;
-  if (error) return <div>데이터를 불러올 수 없습니다.</div>;
-  
+  if (isListLoading) return <div className="p-8">설비 리스트 로드 중...</div>;
+
   return (
     <div className="h-full flex flex-col">
       <PredictionHeader
-        equipmentList={data ?? []}
-        selectedEquipmentId={selectedEquipmentId}
+        equipmentList={equipmentList ?? []}
+        selectedEquipmentId={selectedId}
         onEquipmentChange={handleEquipmentChange}
         onPredictClick={handlePredict}
       />
       <div className="flex-1 overflow-y-auto p-8">
-        {!predictedEquipment ? (
-          <PredictionEmpty />
+        {isAnalyzing ? (
+          <PredictionLoading /> // 1. 분석 중 화면
+        ) : resultData ? (
+          <PredictionResult equipment={resultData} /> // 2. 결과 화면 (서버에서 받은 ML 데이터)
         ) : (
-          <PredictionResult equipment={predictedEquipment} />
+          <PredictionEmpty /> // 3. 초기 안내 화면
         )}
       </div>
     </div>
