@@ -13,7 +13,7 @@ export const equipmentApi = {
 
   // 설비 등록/수정
   create: async (data: EquipmentFormValues): Promise<void> => {
-    await apiClient.post('/api/prediction/add', data);
+    await apiClient.post('/api/prediction/create', data);
   },
 
   // 상세 분석 데이터 조회
