@@ -23,11 +23,10 @@ public class PredictionController {
      * 상세 페이지에서 분석을 실행하거나 설비를 추가할 때 호출합니다.
      */
     @PostMapping("/add")
-    public ResponseEntity<PredictionResult> saveOrUpdate(@RequestBody PredictionResult result) {
-        // 서비스에서 "ID가 있으면 업데이트, 없으면 신규 저장" 로직 수행
-        PredictionResult savedResult = predictionService.saveOrUpdate(result);
-        return ResponseEntity.ok(savedResult);
-    }
+    public ResponseEntity<PredictionResult> saveWithAnalysis(@RequestBody PredictionResult result) {
+    PredictionResult savedResult = predictionService.saveWithAnalysis(result);
+    return ResponseEntity.ok(savedResult);
+}
 
     /**
      * ✅ 1. 관리 페이지용: 모든 설비의 상태 목록 조회 (기존 유지)
@@ -64,5 +63,14 @@ public class PredictionController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+ * ✅ [신규 추가] 단순 설비 등록 및 업데이트
+ * 프론트엔드의 create()에서 호출 (ML 분석 실행 안 함)
+ */
+@PostMapping("/create")
+public ResponseEntity<PredictionResult> createOnly(@RequestBody PredictionResult result) {
+    PredictionResult savedResult = predictionService.saveOnly(result);
+    return ResponseEntity.ok(savedResult);
+}
 
 }

@@ -5,36 +5,70 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.ResponseEntity;
 
 import com.example.demo.domain.PredictionResult;
 import com.example.demo.repository.PredictionResultRepository;
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 public class PredictionResultService {
 
     private final PredictionResultRepository repository;
+    private final RestTemplate restTemplate;
 
+    // 생성자: final 필드들을 초기화합니다. (에러 해결 포인트)
     public PredictionResultService(PredictionResultRepository repository) {
         this.repository = repository;
-        
+        this.restTemplate = new RestTemplate();
     }
-  
+
+    public PredictionResult saveOnly(PredictionResult data) {
+    return processSave(data);
+}
+
+/**
+ * ✅ 2. ML 분석 수행 후 저장 (analyze용)
+ */
+public PredictionResult saveWithAnalysis(PredictionResult newResult) {
+    // 기존에 있던 ML 서버(FastAPI) 호출 로직을 그대로 유지합니다.
+    String mlUrl = "http://localhost:8000/predict";
+    try {
+        PredictionResult mlResponse = restTemplate.postForObject(mlUrl, newResult, PredictionResult.class);
+        if (mlResponse != null) {
+            newResult.setExpectedError(mlResponse.getExpectedError());
+            newResult.setStatus(mlResponse.getStatus());
+            newResult.setFailurePredictions(mlResponse.getFailurePredictions());
+        }
+    } catch (Exception e) {
+        System.err.println("❌ ML 서버 통신 중 오류 발생: " + e.getMessage());
+    }
+
+    return processSave(newResult);
+}
+
+/**
+ * ✅ 3. 공통 DB 저장 처리 (ID 매핑 로직)
+ */
+private PredictionResult processSave(PredictionResult data) {
+    PredictionResult existing = repository.findByAssetId(data.getAssetId());
     
-    
-    /**
-     * ✅ [관리 페이지용] 모든 설비 목록 조회
-     * Update 방식이므로 중복이 없습니다.
-     */
+    if (existing != null) {
+        data.setId(existing.getId());
+    } else {
+        data.setId(null);
+    }
+
+    data.setPredictedAt(LocalDateTime.now());
+    return repository.save(data);
+}
+
+    // --- 데이터 조회 메서드들 ---
+
     public List<PredictionResult> getAllAssetsLatestStatus() {
         return repository.findAll();
     }
 
-    /**
-     * ✅ [중요] 설비 ID 리스트 조회 (컨트롤러 에러 해결용)
-     * 셀렉트 박스 등에서 설비 ID 목록만 필요할 때 사용합니다.
-     */
     public List<String> getUniqueAssetIds() {
         return repository.findAll().stream()
                 .map(PredictionResult::getAssetId)
@@ -42,35 +76,11 @@ public class PredictionResultService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * ✅ [설비 저장 및 업데이트] 핵심 로직
-     */
-    public PredictionResult saveOrUpdate(PredictionResult newResult) {
-        // 기존에 같은 assetId를 가진 데이터가 있는지 확인
-        PredictionResult existing = repository.findByAssetId(newResult.getAssetId());
-
-        if (existing != null) {
-            // 기존 DB ID를 새 객체에 주입하여 Update 수행
-            newResult.setId(existing.getId());
-        }
-
-        newResult.setPredictedAt(LocalDateTime.now());
-        return repository.save(newResult);
-    }
-
-    /**
-     * ✅ [상세 페이지용] 특정 설비 조회
-     */
     public PredictionResult getLatestAnalysis(String assetId) {
         return repository.findByAssetId(assetId);
     }
 
-    /**
-     * ✅ [관리 페이지용] 설비 삭제
-     */
     public void deleteByAssetId(String assetId) {
         repository.deleteByAssetId(assetId);
     }
-
-   
 }
