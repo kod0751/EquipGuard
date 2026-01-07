@@ -57,6 +57,7 @@ export default function PredictionResult({ equipment }: PredictionResultProps) {
   const action = getRecommendedAction(riskStatus);
   const ActionIcon = action.icon;
 
+  console.log(equipment)
   return (
     <div className="space-y-6">
       {/* 설비ID */}
@@ -199,21 +200,21 @@ export default function PredictionResult({ equipment }: PredictionResultProps) {
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
                     <span className="text-sm">
-                      {equipment.aiRecommendations}
-                    </span>
-                  </li>
-                  {/* <li className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
-                    <span className="text-sm">
-                      온도 변화가 감지되었습니다. 냉각 시스템을 확인하세요.
+                      {equipment.aiRecommendations[0]}
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
                     <span className="text-sm">
-                      예상 정비를 통과 고장 확률을 20% 낮출 수 있습니다.
+                      {equipment.aiRecommendations[1]}
                     </span>
-                  </li> */}
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
+                    <span className="text-sm">
+                      {equipment.aiRecommendations[2]}
+                    </span>
+                  </li>
                 </ul>
               </div>
             </div>
