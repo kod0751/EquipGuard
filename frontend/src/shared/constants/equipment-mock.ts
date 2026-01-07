@@ -2,96 +2,103 @@ import type { Equipment } from '../types/equipment';
 
 export const equipmentMockData: Equipment[] = [
   {
+    id: '695cb9b14d9b19370c1ba909',
     assetId: 'M14860',
     type: '중형 설비',
-    expectedError: 0.92, // 92%
+    expected_error: 0.92, // 92%
     status: '긴급',
     air_temp: 300.0,
     process_temp: 310.0,
     rpm: 1850,
     torque: 65.0,
     tool_wear: 110,
-    failurePredictions: [
+    failure_predictions: [
       { type: 'PWF', probability: 100 },
       { type: 'OSF', probability: 0 },
     ],
   },
   {
+    id: '695cb9b14d9b19370c1ba965',
     assetId: 'L47183',
     type: '대형 설비',
-    expectedError: 0.9,
+    expected_error: 0.9,
     status: '긴급',
     air_temp: 300.0,
     process_temp: 310.0,
     rpm: 850,
     torque: 8.0,
     tool_wear: 150,
-    failurePredictions: [
+    failure_predictions: [
       { type: 'PWF', probability: 100 },
       { type: 'TWF', probability: 0 },
     ],
   },
   {
+    id: '695cb9b14d9b19370c1ba955',
     assetId: 'L47184',
     type: '대형 설비',
-    expectedError: 0.57,
+    expected_error: 0.57,
     status: '주의',
     air_temp: 300.0,
     process_temp: 310.0,
     rpm: 1350,
     torque: 48.0,
     tool_wear: 150,
-    failurePredictions: [
+    failure_predictions: [
       { type: 'TWF', probability: 79 },
       { type: 'PWF', probability: 17.9 },
     ],
   },
   {
+    id: '695cb9b14d9b19370c1ba945',
     assetId: 'H31002',
     type: '고성능 설비',
-    expectedError: 0.19,
+    expected_error: 0.19,
     status: '정상',
     air_temp: 300.0,
     process_temp: 310.0,
     rpm: 1350,
     torque: 28.0,
     tool_wear: 150,
-    failurePredictions: [
+    failure_predictions: [
       { type: 'TWF', probability: 86.9 },
       { type: 'PWF', probability: 11.7 },
     ],
   },
   {
+    id: '695cb9b14d9b19370c1ba935',
     assetId: 'M14861',
     type: '중형 설비',
-    expectedError: 0.03,
+    expected_error: 0.03,
     status: '정상',
     air_temp: 300.0,
     process_temp: 310.0,
     rpm: 1350,
     torque: 28.0,
     tool_wear: 110,
-    failurePredictions: [
+    failure_predictions: [
       { type: 'TWF', probability: 87 },
       { type: 'PWF', probability: 11.5 },
     ],
   },
   {
+    id: '695cb9b14d9b19370c1ba925',
     assetId: 'L47185',
     type: '대형 설비',
-    expectedError: 0.41,
+    expected_error: 0.41,
     status: '정상',
     air_temp: 305.0,
     process_temp: 310.0,
     rpm: 1450,
     torque: 28.0,
     tool_wear: 130,
-    failurePredictions: [
+    failure_predictions: [
       { type: 'TWF', probability: 94.2 },
       { type: 'HDF', probability: 4.6 },
     ],
   },
   {
+    id: '695cb9b14d9b19370c1ba907',
     assetId: 'L47186',
     type: '대형 설비',
     air_temp: 305.0,

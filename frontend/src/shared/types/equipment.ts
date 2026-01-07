@@ -15,12 +15,12 @@ export interface Equipment {
   id: string;
   assetId: string;
   type: EquipmentType;
-  expectedError?: number; // 0 ~ 1
+  expected_error?: number; // 0 ~ 1
   status?: EquipmentStatus;
   air_temp: number;
   process_temp: number;
   rpm: number;
   torque: number;
   tool_wear: number;
-  failurePredictions?: FailurePrediction[];
+  failure_predictions?: FailurePrediction[];
 }

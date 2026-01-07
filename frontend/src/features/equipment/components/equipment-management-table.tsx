@@ -42,9 +42,9 @@ export function EquipmentManagementTable({
   const [sorting, setSorting] = useState<SortingState>([]);
 
   // 상태 매핑 함수
-  const getStatusId = (expectedError: number): string => {
-    if (expectedError >= 0.75) return 'critical';
-    if (expectedError >= 0.5) return 'warning';
+  const getStatusId = (expected_error: number): string => {
+    if (expected_error >= 0.75) return 'critical';
+    if (expected_error >= 0.5) return 'warning';
     return 'normal';
   };
 
@@ -55,7 +55,7 @@ export function EquipmentManagementTable({
     // 상태 필터링
     if (filter !== 'all') {
       data = data.filter((equipment) => {
-        const statusId = getStatusId(equipment.expectedError ?? 0);
+        const statusId = getStatusId(equipment.expected_error ?? 0);
         return statusId === filter;
       });
     }
@@ -115,7 +115,7 @@ export function EquipmentManagementTable({
   },
       }),
 
-      columnHelper.accessor('expectedError', {
+      columnHelper.accessor('expected_error', {
         header: ({ column }) => {
           return (
             <button

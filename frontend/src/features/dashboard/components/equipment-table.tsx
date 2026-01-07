@@ -43,7 +43,7 @@ export function EquipmentTable() {
 
           <tbody>
             {data?.map((equipment) => {
-              const percent = Math.round((equipment.expectedError ?? 0) * 100);
+              const percent = Math.round((equipment.expected_error ?? 0) * 100);
 
               return (
                 <tr key={equipment.assetId} className="border-b last:border-0">

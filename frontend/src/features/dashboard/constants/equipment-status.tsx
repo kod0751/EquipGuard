@@ -54,7 +54,7 @@ export function calcEquipmentStatus(equipments: Equipment[]) {
     (acc, cur) => {
       acc.TOTAL += 1;
 
-      const status = getStatusByError(cur.expectedError ?? 0);
+      const status = getStatusByError(cur.expected_error ?? 0);
 
       if (status === '정상') acc.NORMAL += 1;
       if (status === '주의') acc.WARNING += 1;

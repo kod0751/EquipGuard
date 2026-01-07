@@ -29,7 +29,7 @@ export function EquipmentData(equipments: Equipment[]): ChartData[] {
   };
 
   equipments.forEach((equipment) => {
-    const status = getStatusByError(equipment.expectedError ?? 0);
+    const status = getStatusByError(equipment.expected_error ?? 0);
     countMap[status] += 1;
   });
 
