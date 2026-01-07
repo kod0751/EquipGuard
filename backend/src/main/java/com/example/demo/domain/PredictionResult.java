@@ -37,5 +37,5 @@ public class PredictionResult {
         private double probability; 
     }
 
-    private String aiRecommendations;
+    private List<String> aiRecommendations;
 }

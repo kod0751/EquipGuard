@@ -44,8 +44,8 @@ public PredictionResult saveWithAnalysis(PredictionResult newResult) {
             newResult.setFailurePredictions(mlResponse.getFailurePredictions());
 
             // 🚀 [추가 위치] ML 분석이 성공적으로 끝나면 GPT에게 권장사항을 물어봅니다.
-                String advice = gptService.getAiRecommendations(newResult.getAssetId(), newResult.getExpectedError());
-                newResult.setAiRecommendations(advice);
+                List<String> advice = gptService.getAiRecommendations(newResult.getAssetId(), newResult.getExpectedError());
+            newResult.setAiRecommendations(advice);
         }
     } catch (Exception e) {
         System.err.println("❌ ML 서버 통신 중 오류 발생: " + e.getMessage());
