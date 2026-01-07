@@ -199,10 +199,10 @@ export default function PredictionResult({ equipment }: PredictionResultProps) {
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
                     <span className="text-sm">
-                      진동 수치가 평균보다 높습니다. 베어링 점검을 권장합니다.
+                      {equipment.aiRecommendations}
                     </span>
                   </li>
-                  <li className="flex items-start gap-3">
+                  {/* <li className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
                     <span className="text-sm">
                       온도 변화가 감지되었습니다. 냉각 시스템을 확인하세요.
@@ -213,7 +213,7 @@ export default function PredictionResult({ equipment }: PredictionResultProps) {
                     <span className="text-sm">
                       예상 정비를 통과 고장 확률을 20% 낮출 수 있습니다.
                     </span>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>
