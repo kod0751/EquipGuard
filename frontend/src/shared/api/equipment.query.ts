@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { equipmentApi } from './equipment.api';
 import { equipmentKeys } from './equipment.keys';
+import type { Equipment } from '../types/equipment';
 
 export const useEquipmentListQuery = () =>
   useQuery({
@@ -20,5 +21,12 @@ export const useCreateEquipmentMutation = () => {
     onError: (error) => {
       console.error("설비 추가 중 오류 발생:", error);
     }
+  });
+};
+
+// 상세 분석 데이터 조회 (예측 실행 시 사용)
+export const usePredictMutation = () => {
+  return useMutation({
+    mutationFn: (equipmentData: Equipment) => equipmentApi.analyze(equipmentData),
   });
 };
