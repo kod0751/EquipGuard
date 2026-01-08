@@ -197,24 +197,12 @@ export default function PredictionResult({ equipment }: PredictionResultProps) {
               </div>
               <div className="flex-1">
                 <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
-                    <span className="text-sm">
-                      {equipment.aiRecommendations[0]}
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
-                    <span className="text-sm">
-                      {equipment.aiRecommendations[1]}
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
-                    <span className="text-sm">
-                      {equipment.aiRecommendations[2]}
-                    </span>
-                  </li>
+                  {equipment.aiRecommendations?.map((text, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
+                      <span className="text-sm">{text}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>

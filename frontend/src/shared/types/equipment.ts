@@ -23,5 +23,5 @@ export interface Equipment {
   torque: number;
   tool_wear: number;
   failure_predictions?: FailurePrediction[];
-  aiRecommendations?:string;
+  aiRecommendations?: string[];
 }
