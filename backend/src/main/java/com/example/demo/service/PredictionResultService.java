@@ -44,7 +44,11 @@ public PredictionResult saveWithAnalysis(PredictionResult newResult) {
             newResult.setFailurePredictions(mlResponse.getFailurePredictions());
 
             // 🚀 [추가 위치] ML 분석이 성공적으로 끝나면 GPT에게 권장사항을 물어봅니다.
-                List<String> advice = gptService.getAiRecommendations(newResult.getAssetId(), newResult.getExpectedError());
+                List<String> advice = gptService.getAiRecommendations(
+                newResult.getAssetId(), 
+                newResult.getExpectedError(), 
+                newResult.getFailurePredictions() // 이 부분 추가
+            );
             newResult.setAiRecommendations(advice);
         }
     } catch (Exception e) {

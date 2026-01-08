@@ -7,6 +7,7 @@ import org.springframework.http.*;
 
 // 에러 해결을 위한 핵심 Import
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.demo.domain.PredictionResult;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.*;
@@ -25,21 +26,30 @@ public class GptService {
     /**
      * 리턴 타입을 String -> List<String>으로 변경했습니다.
      */
-    public List<String> getAiRecommendations(String assetId, double expectedError) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(apiKey);
+    public List<String> getAiRecommendations(String assetId, double expectedError, List<PredictionResult.FailurePrediction> failurePredictions) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.setBearerAuth(apiKey);
 
-        // 0.19를 19.0%로 변환
-        double errorRatePercent = expectedError * 100; 
+    double errorRatePercent = expectedError * 100;
 
-        // 프롬프트: JSON 배열 형식을 강제함
-        String prompt = String.format(
-            "설비ID: %s, 현재 고장 확률: %.1f%%. " +
-            "현장 작업자가 즉시 조치해야 할 사항 3가지를 알려줘. " +
-            "답변은 반드시 다른 설명 없이 [\"문장1\", \"문장2\", \"문장3\"] 형식의 JSON 배열로만 보내줘.",
-            assetId, errorRatePercent
-        );
+    // 상세 고장 유형 정보를 문자열로 변환
+    String failureDetails = "";
+    if (failurePredictions != null && !failurePredictions.isEmpty()) {
+        failureDetails = failurePredictions.stream()
+            .map(fp -> String.format("- %s (확률: %.1f%%)", fp.getType(), fp.getProbability()))
+            .collect(java.util.stream.Collectors.joining("\n"));
+    }
+
+    // 프롬프트에 상세 고장 유형(failureDetails) 추가
+    String prompt = String.format(
+        "설비ID: %s\n" +
+        "전체 고장 확률: %.1f%%\n" +
+        "주요 고장 유형:\n%s\n\n" +
+        "위 데이터를 바탕으로 현장 작업자가 즉시 조치해야 할 사항 3가지를 알려줘. " +
+        "답변은 반드시 다른 설명 없이 [\"문장1\", \"문장2\", \"문장3\"] 형식의 JSON 배열로만 보내줘.",
+        assetId, errorRatePercent, failureDetails
+    );
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", "gpt-3.5-turbo");
