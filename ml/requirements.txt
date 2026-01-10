@@ -1,15 +1,18 @@
-# 데이터 처리 및 수치 계산
-pandas
-numpy
+pandas>=2.2.0
+numpy>=1.26.0
 
-# 머신러닝 모델 및 전처리
-scikit-learn
-lightgbm
-imbalanced-learn
 
-# 모델 저장 및 로드
-joblib
+scikit-learn>=1.4.0
+lightgbm>=4.3.0
+imbalanced-learn>=0.12.0
 
-# (선택) 데이터 시각화 및 분석용 (Notebook 사용 시)
-matplotlib
-seaborn
+
+joblib>=1.3.0
+
+
+fastapi>=0.110.0
+uvicorn>=0.27.0
+
+
+matplotlib>=3.8.0
+seaborn>=0.13.0
