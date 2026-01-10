@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import com.fasterxml.jackson.annotation.JsonProperty; // 추가
 import lombok.Data;
 
@@ -16,8 +18,10 @@ public class PredictionResult {
     private String type;
     private String status;
 
-    @JsonProperty("expected_error") // ML 서버의 expected_error를 이 필드에 매핑
-    private double expectedError; 
+    // Jackson(JSON) 매핑과 MongoDB 매핑을 모두 지정
+    @Field("expected_error") 
+    @JsonProperty("expected_error")
+    private double expectedError;
 
     private double air_temp;
     private double process_temp; 
@@ -25,7 +29,8 @@ public class PredictionResult {
     private double torque;
     private int tool_wear;
 
-    @JsonProperty("failure_predictions") // ML 서버의 failure_predictions를 이 필드에 매핑
+    @Field("failure_predictions")
+    @JsonProperty("failure_predictions")
     private List<FailurePrediction> failurePredictions;
 
     private String recommendation; 
