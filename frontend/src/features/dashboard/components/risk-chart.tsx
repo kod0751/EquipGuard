@@ -19,7 +19,6 @@ export function RiskChart() {
 
   const totalCount = EquipmentStatus.reduce((acc, cur) => acc + cur.value, 0);
 
-  console.log(EquipmentStatus)
   return (
     <Card className="p-6">
       {/* 차트 제목 영역 */}

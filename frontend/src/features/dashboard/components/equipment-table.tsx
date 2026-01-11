@@ -20,7 +20,7 @@ const columnHelper = createColumnHelper<Equipment>();
 export function EquipmentTable() {
   const { data, isLoading, error } = useEquipmentListQuery();
 
-  // 1. 고장 확률이 높은 순으로 상위 6개 추출
+  // 고장 확률이 높은 순으로 상위 6개 추출
   const topFailureData = useMemo(() => {
     if (!data) return [];
     return [...data]
@@ -28,7 +28,7 @@ export function EquipmentTable() {
       .slice(0, 6);
   }, [data]);
 
-  // 2. TanStack Table 컬럼 정의
+  // TanStack Table 컬럼 정의
   const columns = useMemo(
     () => [
       columnHelper.accessor('assetId', {
