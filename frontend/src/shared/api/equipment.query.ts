@@ -15,7 +15,6 @@ export const useCreateEquipmentMutation = () => {
   return useMutation({
     mutationFn: equipmentApi.create,
     onSuccess: () => {
-      // 성공 시 'equipment' 리스트 데이터를 최신화하기 위해 캐시 무효화
       queryClient.invalidateQueries({ queryKey: equipmentKeys.list() });
     },
     onError: (error) => {
@@ -26,12 +25,28 @@ export const useCreateEquipmentMutation = () => {
 
 // 상세 분석 데이터 조회 (예측 실행 시 사용)
 export const usePredictMutation = () => {
-  const queryClient = useQueryClient(); // queryClient 추가
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (equipmentData: Equipment) => equipmentApi.analyze(equipmentData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: equipmentKeys.list() });
     },
+  });
+};
+
+// 설비 데이터 삭제
+export const useDeleteEquipmentMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: equipmentApi.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: equipmentKeys.list() });
+    },
+    onError: (error) => {
+      console.error("설비 삭제 중 오류 발생:", error);
+      alert("삭제에 실패했습니다.");
+    }
   });
 };

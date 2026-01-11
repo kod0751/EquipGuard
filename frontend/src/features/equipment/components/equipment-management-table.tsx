@@ -18,7 +18,7 @@ import {
 import { equipmentMockData } from '@/shared/constants/equipment-mock';
 import { getErrorColor } from '@/shared/constants/wear';
 import { Eye, Pencil, Trash2, ArrowUpDown } from 'lucide-react';
-import { useEquipmentListQuery } from '@/shared/api/equipment.query';
+import { useDeleteEquipmentMutation, useEquipmentListQuery } from '@/shared/api/equipment.query';
 
 type Equipment = (typeof equipmentMockData)[number];
 
@@ -35,8 +35,7 @@ export function EquipmentManagementTable({
   searchQuery,
 }: EquipmentManagementTableProps) {
   const { data : equipmentData, isLoading, error } = useEquipmentListQuery();
-  
-
+  const deleteMutation = useDeleteEquipmentMutation();
   
   // 정렬 상태 관리
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -172,9 +171,10 @@ export function EquipmentManagementTable({
             <button
               className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-red-500"
               aria-label="삭제"
+              disabled={deleteMutation.isPending}
               onClick={() => handleDelete(info.row.original)}
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className={`w-4 h-4 ${deleteMutation.isPending ? 'opacity-50' : ''}`} />
             </button>
           </div>
         ),
@@ -208,9 +208,20 @@ export function EquipmentManagementTable({
     //TODO: 수정 폼 열기
   };
 
-  const handleDelete = (equipment: Equipment) => {
-    console.log('Delete:', equipment);
-    //TODO: 설비 삭제 확인 폼 열기
+    const handleDelete = (equipment: Equipment) => {
+    // 사용자 확인 컨펌
+    //TODO: 설비 삭제 모달 추가하기
+    if (window.confirm(`${equipment.assetId} 설비를 삭제하시겠습니까?`)) {
+      deleteMutation.mutate(equipment.assetId, {
+        onSuccess: () => {
+          // 필요 시 토스트 알림 추가 가능
+          console.log('삭제 완료');
+        },
+        onError: () => {
+          alert('삭제 중 오류가 발생했습니다.');
+        }
+      });
+    };
   };
 
   if (isLoading) return <div>로딩중...</div>;

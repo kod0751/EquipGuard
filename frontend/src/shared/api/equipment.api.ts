@@ -22,6 +22,11 @@ export const equipmentApi = {
     return data;
   },
 
+  // 설비 삭제
+  delete: async (assetId: string): Promise<void> => {
+    await apiClient.delete(`/api/prediction/${assetId}`);
+  },
+
   analyze: async (equipmentData: Equipment): Promise<Equipment> => {
     // 백엔드의 /add 엔드포인트는 ML 분석 로직을 포함하고 있으므로 이를 활용합니다.
     const { data } = await apiClient.post('/api/prediction/add', equipmentData);
