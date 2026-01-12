@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from '@/shared/components/layout/AppLayout';
 
 import { DashboardPage } from '@/features/dashboard';
-import { EquipmentList } from '@/features/equipment';
+import { EquipmentDetail, EquipmentList } from '@/features/equipment';
 import { PredictionPage } from '@/features/prediction';
 
 export default function AppRoutes() {
@@ -12,10 +12,8 @@ export default function AppRoutes() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />
 
-        <Route path="/equipment">
-          <Route index element={<EquipmentList />} />
-          {/* <Route path=":id" element={<EquipmentDetail />} /> */}
-        </Route>
+        <Route path="/equipment" element={<EquipmentList />} />
+        <Route path="/equipment/detail/:id" element={<EquipmentDetail />} />
 
         <Route path="/prediction" element={<PredictionPage />} />
       </Route>
