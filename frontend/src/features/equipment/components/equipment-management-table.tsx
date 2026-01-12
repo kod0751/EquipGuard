@@ -19,6 +19,7 @@ import { equipmentMockData } from '@/shared/constants/equipment-mock';
 import { getErrorColor } from '@/shared/constants/wear';
 import { Eye, Pencil, Trash2, ArrowUpDown } from 'lucide-react';
 import { useDeleteEquipmentMutation, useEquipmentListQuery } from '@/shared/api/equipment.query';
+import { useNavigate } from 'react-router-dom';
 
 type Equipment = (typeof equipmentMockData)[number];
 
@@ -34,6 +35,7 @@ export function EquipmentManagementTable({
   filter,
   searchQuery,
 }: EquipmentManagementTableProps) {
+  const navigate = useNavigate();
   const { data : equipmentData, isLoading, error } = useEquipmentListQuery();
   const deleteMutation = useDeleteEquipmentMutation();
   
@@ -155,7 +157,7 @@ export function EquipmentManagementTable({
         cell: (info) => (
           <div className="flex items-center gap-2">
             <button
-              className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-foreground"
+              className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-green-500"
               aria-label="보기"
               onClick={() => handleView(info.row.original)}
             >
@@ -199,8 +201,7 @@ export function EquipmentManagementTable({
 
   // 액션 핸들러들
   const handleView = (equipment: Equipment) => {
-    console.log('View:', equipment);
-    //TODO: Detail 열기
+    navigate(`/equipment/detail/${equipment.assetId}`);
   };
 
   const handleEdit = (equipment: Equipment) => {
