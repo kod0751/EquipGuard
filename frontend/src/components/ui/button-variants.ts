@@ -5,9 +5,10 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground',
-        outline: 'border bg-background',
+        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        outline: 'border bg-background hover:bg-accent',
         ghost: 'hover:text-primary',
+        destructive: 'bg-red-500 text-white shadow-sm hover:bg-destructive/90',
       },
       size: {
         default: 'h-9 px-4',
