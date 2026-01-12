@@ -208,15 +208,13 @@ GET    /health                 # 헬스 체크
 |------|------|
 | Frontend & ML | [@kod0751](https://github.com/kod0751) |
 | Backend & ML | [@kdh1202](https://github.com/kdh1202) |
-| Frontend | Contributor |
+| Frontend | [@mszzz2](https://github.com/mszzz2) |
 
 ## 🔮 향후 계획
 
-- [ ] 설비 상세 페이지 구현
-- [ ] 설비 수정/삭제 기능
+- [ ] 설비 수정 기능
 - [ ] 고장 이력 통계 및 분석
 - [ ] 알림 시스템 (임계값 초과 시)
-- [ ] 다국어 지원
 - [ ] 모바일 반응형 최적화
 - [ ] PDF 리포트 생성
 
