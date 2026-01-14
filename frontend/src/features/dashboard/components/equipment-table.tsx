@@ -1,19 +1,20 @@
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Card } from '@/components/ui/card';
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
 import {
   AVATAR_STYLE_MAP,
   STATUS_STYLE_MAP,
-} from '../constants/equipmennt-styles';
-import { getErrorColor } from '@/shared/constants/wear';
-import { useEquipmentListQuery } from '@/shared/api/equipment.query';
-import { useMemo } from 'react';
+} from "../constants/equipmennt-styles";
+import { getErrorColor } from "@/shared/constants/wear";
+import { useEquipmentListQuery } from "@/shared/api/equipment.query";
+import { useMemo } from "react";
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
   createColumnHelper,
-} from '@tanstack/react-table';
-import type { Equipment } from '@/shared/types/equipment';
+} from "@tanstack/react-table";
+import type { Equipment } from "@/shared/types/equipment";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const columnHelper = createColumnHelper<Equipment>();
 
@@ -31,8 +32,8 @@ export function EquipmentTable() {
   // TanStack Table 컬럼 정의
   const columns = useMemo(
     () => [
-      columnHelper.accessor('assetId', {
-        header: '설비 ID',
+      columnHelper.accessor("assetId", {
+        header: "설비 ID",
         cell: (info) => {
           const equipment = info.row.original;
           return (
@@ -47,12 +48,12 @@ export function EquipmentTable() {
           );
         },
       }),
-      columnHelper.accessor('type', {
-        header: '유형',
+      columnHelper.accessor("type", {
+        header: "유형",
         cell: (info) => <span className="text-sm">{info.getValue()}</span>,
       }),
-      columnHelper.accessor('expected_error', {
-        header: '고장 확률',
+      columnHelper.accessor("expected_error", {
+        header: "고장 확률",
         cell: (info) => {
           const percent = Math.round((info.getValue() ?? 0) * 100);
           return (
@@ -68,8 +69,8 @@ export function EquipmentTable() {
           );
         },
       }),
-      columnHelper.accessor('status', {
-        header: '상태',
+      columnHelper.accessor("status", {
+        header: "상태",
         cell: (info) => {
           const status = info.getValue();
           return status ? (
@@ -87,7 +88,24 @@ export function EquipmentTable() {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (isLoading) return <div>로딩중...</div>;
+  if (isLoading) {
+    return (
+      <section className="p-8 pt-0">
+        <div className="bg-card rounded-xl border border-border overflow-hidden">
+          <div className="p-6 space-y-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <Skeleton className="h-6 flex-1" />
+                <Skeleton className="h-6 w-24" />
+                <Skeleton className="h-6 w-24" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
   if (error) return <div>데이터를 불러올 수 없습니다.</div>;
 
   return (
@@ -123,7 +141,10 @@ export function EquipmentTable() {
 
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="border-b last:border-0 hover:bg-slate-50/50 transition-colors">
+              <tr
+                key={row.id}
+                className="border-b last:border-0 hover:bg-slate-50/50 transition-colors"
+              >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="py-4 px-2">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

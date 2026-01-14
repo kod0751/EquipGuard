@@ -1,19 +1,34 @@
-'use client';
+"use client";
 
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Card } from '@/components/ui/card';
-import { useEquipmentListQuery } from '@/shared/api/equipment.query';
-import { EquipmentData } from '@/shared/utils/EquipmentData';
-import { AlertCircle } from 'lucide-react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-
-
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useEquipmentListQuery } from "@/shared/api/equipment.query";
+import { EquipmentData } from "@/shared/utils/EquipmentData";
+import { AlertCircle } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 export function RiskChart() {
   const { data, isLoading, error } = useEquipmentListQuery();
-  
-    if (isLoading) return <div>로딩중...</div>;
-    if (error) return <div>데이터를 불러올 수 없습니다.</div>;
+
+  if (isLoading) {
+    return (
+      <Card className="p-6">
+        <div className="space-y-2 mb-4">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-4 w-48" />
+        </div>
+        <div className="flex justify-center py-6">
+          <Skeleton className="h-50 w-50 rounded-full" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+      </Card>
+    );
+  }
+  if (error) return <div>데이터를 불러올 수 없습니다.</div>;
 
   const EquipmentStatus = EquipmentData(data ?? []);
 
@@ -50,7 +65,7 @@ export function RiskChart() {
 
             <Tooltip
               contentStyle={{
-                borderRadius: '8px',
+                borderRadius: "8px",
               }}
             />
           </PieChart>
@@ -67,9 +82,7 @@ export function RiskChart() {
       <div className="space-y-3 mb-4">
         {EquipmentStatus.map((item) => {
           const percentage =
-            totalCount === 0
-              ? 0
-              : Math.round((item.value / totalCount) * 100);
+            totalCount === 0 ? 0 : Math.round((item.value / totalCount) * 100);
 
           return (
             <div key={item.name} className="flex items-center justify-between">

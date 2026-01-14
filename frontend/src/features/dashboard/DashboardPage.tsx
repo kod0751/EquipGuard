@@ -1,7 +1,7 @@
-import DashboardHeader from './components/dashboard-header';
-import { EquipmentTable } from './components/equipment-table';
-import { RiskChart } from './components/risk-chart';
-import { StateCard } from './components/state-card';
+import DashboardHeader from "./components/dashboard-header";
+import { EquipmentTable } from "./components/equipment-table";
+import { RiskChart } from "./components/risk-chart";
+import { StateCard } from "./components/state-card";
 
 export default function DashboardPage() {
   return (
