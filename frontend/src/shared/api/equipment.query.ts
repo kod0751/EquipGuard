@@ -1,7 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { equipmentApi } from './equipment.api';
-import { equipmentKeys } from './equipment.keys';
-import type { Equipment } from '../types/equipment';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { equipmentApi } from "./equipment.api";
+import { equipmentKeys } from "./equipment.keys";
+import type { Equipment } from "../types/equipment";
+import { toast } from "sonner";
 
 export const useEquipmentListQuery = () =>
   useQuery({
@@ -15,11 +16,12 @@ export const useCreateEquipmentMutation = () => {
   return useMutation({
     mutationFn: equipmentApi.create,
     onSuccess: () => {
+      toast.success("설비가 성공적으로 추가되었습니다.");
       queryClient.invalidateQueries({ queryKey: equipmentKeys.list() });
     },
-    onError: (error) => {
-      console.error("설비 추가 중 오류 발생:", error);
-    }
+    onError: () => {
+      toast.error("설비 추가에 실패했습니다.");
+    },
   });
 };
 
@@ -28,7 +30,8 @@ export const usePredictMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (equipmentData: Equipment) => equipmentApi.analyze(equipmentData),
+    mutationFn: (equipmentData: Equipment) =>
+      equipmentApi.analyze(equipmentData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: equipmentKeys.list() });
     },
@@ -47,6 +50,6 @@ export const useDeleteEquipmentMutation = () => {
     onError: (error) => {
       console.error("설비 삭제 중 오류 발생:", error);
       alert("삭제에 실패했습니다.");
-    }
+    },
   });
 };
