@@ -1,34 +1,56 @@
-import { useState } from 'react';
-import { useEquipmentListQuery, usePredictMutation } from '@/shared/api/equipment.query';
-import { PredictionEmpty } from './components/prediction-empty';
-import PredictionResult from './components/prediction-result';
-import PredictionHeader from './components/prediction-header';
-import { PredictionLoading } from './components/predcition-loading';
+import { useState } from "react";
+import {
+  useEquipmentListQuery,
+  usePredictMutation,
+} from "@/shared/api/equipment.query";
+import { PredictionEmpty } from "./components/prediction-empty";
+import PredictionResult from "./components/prediction-result";
+import PredictionHeader from "./components/prediction-header";
+import { PredictionLoading } from "./components/predcition-loading";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PredictionPage() {
-  const { data: equipmentList, isLoading: isListLoading } = useEquipmentListQuery(); //
-  const [selectedId, setSelectedId] = useState<string>('');
-  
-  const { 
-    mutate: predict, 
-    data: resultData, 
-    isPending: isAnalyzing 
+  const { data: equipmentList, isLoading: isListLoading } =
+    useEquipmentListQuery(); //
+  const [selectedId, setSelectedId] = useState<string>("");
+
+  const {
+    mutate: predict,
+    data: resultData,
+    isPending: isAnalyzing,
   } = usePredictMutation();
 
   const handlePredict = () => {
-  const selectedEquipment = equipmentList?.find(e => e.assetId === selectedId);
-  if (selectedEquipment) {
-    predict(selectedEquipment);
-  }
-  console.log(selectedEquipment)
-};
+    const selectedEquipment = equipmentList?.find(
+      (e) => e.assetId === selectedId
+    );
+    if (selectedEquipment) {
+      predict(selectedEquipment);
+    }
+    console.log(selectedEquipment);
+  };
 
   const handleEquipmentChange = (id: string) => {
     setSelectedId(id);
     // 선택 변경 시 이전 결과 초기화 로직은 필요에 따라 추가
   };
 
-  if (isListLoading) return <div className="p-8">설비 리스트 로드 중...</div>;
+  if (isListLoading) {
+    return (
+      <header className="bg-white border-b border-slate-200 px-8 py-4">
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <Skeleton className="h-8 w-40" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+          <div className="flex items-center gap-4">
+            <Skeleton className="h-10 w-52" />
+            <Skeleton className="h-10 w-28" />
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col">

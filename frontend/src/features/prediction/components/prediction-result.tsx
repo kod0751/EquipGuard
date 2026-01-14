@@ -1,5 +1,5 @@
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   AlertTriangle,
   Lightbulb,
@@ -8,43 +8,43 @@ import {
   Thermometer,
   RotateCcw,
   ChevronsUp,
-} from 'lucide-react';
-import type { Equipment } from '@/shared/types/equipment';
-import { InputDataCard } from './input-data-card';
-import { getRiskStatus } from '@/shared/constants/wear';
+} from "lucide-react";
+import type { Equipment } from "@/shared/types/equipment";
+import { InputDataCard } from "./input-data-card";
+import { getRiskStatus } from "@/shared/constants/wear";
 
 interface PredictionResultProps {
   equipment: Equipment;
 }
 
 const riskVariantMap = {
-  긴급: 'urgent',
-  주의: 'warning',
-  정상: 'normal',
+  긴급: "urgent",
+  주의: "warning",
+  정상: "normal",
 } as const;
 
 const getRecommendedAction = (riskStatus: string) => {
   const actions = {
     긴급: {
       icon: AlertTriangle,
-      iconColor: 'text-red-500',
-      bgColor: 'bg-red-500/10',
-      title: '즉시 점검 필요',
-      description: '설비 가동 중단 후 긴급 점검이 필요합니다',
+      iconColor: "text-red-500",
+      bgColor: "bg-red-500/10",
+      title: "즉시 점검 필요",
+      description: "설비 가동 중단 후 긴급 점검이 필요합니다",
     },
     주의: {
       icon: AlertTriangle,
-      iconColor: 'text-yellow-500',
-      bgColor: 'bg-yellow-500/10',
-      title: '정기 점검 권장',
-      description: '가까운 시일 내 점검을 권장합니다',
+      iconColor: "text-yellow-500",
+      bgColor: "bg-yellow-500/10",
+      title: "정기 점검 권장",
+      description: "가까운 시일 내 점검을 권장합니다",
     },
     정상: {
       icon: CheckCircle2,
-      iconColor: 'text-green-500',
-      bgColor: 'bg-green-500/10',
-      title: '정상 작동 중',
-      description: '설비가 정상적으로 작동하고 있습니다',
+      iconColor: "text-green-500",
+      bgColor: "bg-green-500/10",
+      title: "정상 작동 중",
+      description: "설비가 정상적으로 작동하고 있습니다",
     },
   };
 
@@ -57,7 +57,7 @@ export default function PredictionResult({ equipment }: PredictionResultProps) {
   const action = getRecommendedAction(riskStatus);
   const ActionIcon = action.icon;
 
-  console.log(equipment)
+  console.log(equipment);
   return (
     <div className="space-y-6">
       {/* 설비ID */}
@@ -175,7 +175,7 @@ export default function PredictionResult({ equipment }: PredictionResultProps) {
                     <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                       <div
                         className={
-                          'h-full transition-all bg-linear-to-t from-sky-500 to-indigo-500'
+                          "h-full transition-all bg-linear-to-t from-sky-500 to-indigo-500"
                         }
                         style={{ width: `${percent}%` }}
                       />
