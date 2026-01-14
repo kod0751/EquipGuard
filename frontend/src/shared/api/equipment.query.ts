@@ -44,12 +44,13 @@ export const useDeleteEquipmentMutation = () => {
 
   return useMutation({
     mutationFn: equipmentApi.delete,
-    onSuccess: () => {
+    onSuccess: (_, assetId) => {
+      toast.success(`${assetId} 설비가 삭제되었습니다.`);
       queryClient.invalidateQueries({ queryKey: equipmentKeys.list() });
     },
     onError: (error) => {
       console.error("설비 삭제 중 오류 발생:", error);
-      alert("삭제에 실패했습니다.");
+      toast.error("삭제에 실패했습니다.");
     },
   });
 };

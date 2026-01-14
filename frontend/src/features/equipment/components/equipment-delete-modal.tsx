@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { useDeleteEquipmentMutation } from "@/shared/api/equipment.query";
 import type { Equipment } from "@/shared/types/equipment";
-import { toast } from "sonner";
 
 interface EquipmentDeleteModalProps {
   open: boolean;
@@ -27,15 +26,8 @@ export function EquipmentDeleteModal({
   const handleConfirm = () => {
     if (!equipment) return;
 
-    deleteMutation.mutate(equipment.assetId, {
-      onSuccess: () => {
-        toast.success(`${equipment.assetId} 설비가 삭제되었습니다.`);
-        onOpenChange(false);
-      },
-      onError: () => {
-        toast.error("삭제 중 오류가 발생했습니다.");
-      },
-    });
+    deleteMutation.mutate(equipment.assetId);
+    onOpenChange(false);
   };
 
   return (
