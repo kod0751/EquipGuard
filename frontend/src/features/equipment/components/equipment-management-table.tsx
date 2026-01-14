@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState } from "react";
 import {
   createColumnHelper,
   flexRender,
@@ -9,17 +9,18 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   type SortingState,
-} from '@tanstack/react-table';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+} from "@tanstack/react-table";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   AVATAR_STYLE_MAP,
   STATUS_STYLE_MAP,
-} from '@/features/dashboard/constants/equipmennt-styles';
-import { equipmentMockData } from '@/shared/constants/equipment-mock';
-import { getErrorColor } from '@/shared/constants/wear';
-import { Eye, Pencil, Trash2, ArrowUpDown } from 'lucide-react';
-import { useEquipmentListQuery } from '@/shared/api/equipment.query';
-import { useNavigate } from 'react-router-dom';
+} from "@/features/dashboard/constants/equipmennt-styles";
+import { equipmentMockData } from "@/shared/constants/equipment-mock";
+import { getErrorColor } from "@/shared/constants/wear";
+import { Eye, Pencil, Trash2, ArrowUpDown } from "lucide-react";
+import { useEquipmentListQuery } from "@/shared/api/equipment.query";
+import { useNavigate } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Equipment = (typeof equipmentMockData)[number];
 
@@ -38,16 +39,16 @@ export function EquipmentManagementTable({
   onDeleteClick,
 }: EquipmentManagementTableProps) {
   const navigate = useNavigate();
-  const { data : equipmentData, isLoading, error } = useEquipmentListQuery();
-  
+  const { data: equipmentData, isLoading, error } = useEquipmentListQuery();
+
   // 정렬 상태 관리
   const [sorting, setSorting] = useState<SortingState>([]);
 
   // 상태 매핑 함수
   const getStatusId = (expected_error: number): string => {
-    if (expected_error >= 0.75) return 'critical';
-    if (expected_error >= 0.5) return 'warning';
-    return 'normal';
+    if (expected_error >= 0.75) return "critical";
+    if (expected_error >= 0.5) return "warning";
+    return "normal";
   };
 
   // 필터링된 데이터
@@ -55,7 +56,7 @@ export function EquipmentManagementTable({
     let data = equipmentData ?? [];
 
     // 상태 필터링
-    if (filter !== 'all') {
+    if (filter !== "all") {
       data = data.filter((equipment) => {
         const statusId = getStatusId(equipment.expected_error ?? 0);
         return statusId === filter;
@@ -74,12 +75,12 @@ export function EquipmentManagementTable({
     }
 
     return data;
-  }, [filter, searchQuery ,equipmentData]);
+  }, [filter, searchQuery, equipmentData]);
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('assetId', {
-        header: '설비 정보',
+      columnHelper.accessor("assetId", {
+        header: "설비 정보",
         cell: (info) => {
           const equipment = info.row.original;
           return (
@@ -95,35 +96,35 @@ export function EquipmentManagementTable({
         },
       }),
 
-      columnHelper.accessor('type', {
-        header: '유형',
+      columnHelper.accessor("type", {
+        header: "유형",
         cell: (info) => (
           <span className="text-sm text-foreground">{info.getValue()}</span>
         ),
       }),
 
-      columnHelper.accessor('status', {
-        header: '상태',
+      columnHelper.accessor("status", {
+        header: "상태",
         cell: (info) => {
-    const status = info.getValue();
+          const status = info.getValue();
 
-    if (!status) return null;
+          if (!status) return null;
 
-    return (
-      <span className={`text-sm ${STATUS_STYLE_MAP[status]}`}>
-        {status}
-      </span>
-    );
-  },
+          return (
+            <span className={`text-sm ${STATUS_STYLE_MAP[status]}`}>
+              {status}
+            </span>
+          );
+        },
       }),
 
-      columnHelper.accessor('expected_error', {
+      columnHelper.accessor("expected_error", {
         header: ({ column }) => {
           return (
             <button
               className="flex items-center gap-2 hover:text-foreground"
               onClick={() =>
-                column.toggleSorting(column.getIsSorted() === 'asc')
+                column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
               고장 확률
@@ -149,12 +150,12 @@ export function EquipmentManagementTable({
             </div>
           );
         },
-        sortingFn: 'basic',
+        sortingFn: "basic",
       }),
 
       columnHelper.display({
-        id: 'actions',
-        header: '작업',
+        id: "actions",
+        header: "작업",
         cell: (info) => (
           <div className="flex items-center gap-2">
             <button
@@ -205,72 +206,136 @@ export function EquipmentManagementTable({
   };
 
   const handleEdit = (equipment: Equipment) => {
-    console.log('Edit:', equipment);
+    console.log("Edit:", equipment);
     //TODO: 수정 폼 열기
   };
 
-  if (isLoading) return <div>로딩중...</div>;
+  if (isLoading) {
+    return (
+      <section className="p-8 pt-0">
+        <div className="bg-card rounded-xl border border-border overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-muted/50 border-b border-border">
+                <tr>
+                  {["설비 정보", "유형", "상태", "고장 확률", "작업"].map(
+                    (h) => (
+                      <th
+                        key={h}
+                        className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                      >
+                        {h}
+                      </th>
+                    )
+                  )}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <tr key={i} className="bg-card">
+                    {/* 설비 정보: 아바타(36px) + 텍스트 */}
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="h-9 w-9 rounded-full" />
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-24" />
+                          <Skeleton className="h-3 w-16" />
+                        </div>
+                      </div>
+                    </td>
+                    {/* 유형 */}
+                    <td className="px-6 py-4">
+                      <Skeleton className="h-4 w-16" />
+                    </td>
+                    {/* 상태: 배지 형태 */}
+                    <td className="px-6 py-4">
+                      <Skeleton className="h-6 w-12 rounded-full" />
+                    </td>
+                    {/* 고장 확률: 게이지바 + 수치 */}
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="h-2 w-24 rounded-full" />
+                        <Skeleton className="h-4 w-8" />
+                      </div>
+                    </td>
+                    {/* 작업: 버튼 3개 */}
+                    <td className="px-6 py-4">
+                      <div className="flex gap-2">
+                        <Skeleton className="h-8 w-8 rounded-md" />
+                        <Skeleton className="h-8 w-8 rounded-md" />
+                        <Skeleton className="h-8 w-8 rounded-md" />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    );
+  }
   if (error) return <div>데이터를 불러올 수 없습니다.</div>;
 
   return (
-    <section className='p-8 pt-0'>
-    <div className="bg-card rounded-xl border border-border overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          {/* 테이블 헤더 */}
-          <thead className="bg-muted/30 border-b border-border">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  // header: 각 컬럼의 헤더
-                  <th
-                    key={header.id}
-                    className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-
-          {/* 테이블 바디 */}
-          <tbody className="divide-y divide-border">
-            {table.getRowModel().rows.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={columns.length}
-                  className="px-6 py-8 text-center text-muted-foreground"
-                >
-                  검색 결과가 없습니다.
-                </td>
-              </tr>
-            ) : (
-              table.getRowModel().rows.map((row) => (
-                <tr
-                  key={row.id}
-                  className="hover:bg-muted/20 transition-colors"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-6 py-4">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
+    <section className="p-8 pt-0">
+      <div className="bg-card rounded-xl border border-border overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            {/* 테이블 헤더 */}
+            <thead className="bg-muted/30 border-b border-border">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    // header: 각 컬럼의 헤더
+                    <th
+                      key={header.id}
+                      className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </th>
                   ))}
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+
+            {/* 테이블 바디 */}
+            <tbody className="divide-y divide-border">
+              {table.getRowModel().rows.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={columns.length}
+                    className="px-6 py-8 text-center text-muted-foreground"
+                  >
+                    검색 결과가 없습니다.
+                  </td>
+                </tr>
+              ) : (
+                table.getRowModel().rows.map((row) => (
+                  <tr
+                    key={row.id}
+                    className="hover:bg-muted/20 transition-colors"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id} className="px-6 py-4">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
     </section>
   );
 }

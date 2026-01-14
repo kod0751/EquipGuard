@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import { cn } from '@/lib/utils';
-import { Search } from 'lucide-react';
-import { EquipmentData } from '@/shared/utils/EquipmentData';
-import { useEquipmentListQuery } from '@/shared/api/equipment.query';
+import { useMemo } from "react";
+import { cn } from "@/lib/utils";
+import { Search } from "lucide-react";
+import { EquipmentData } from "@/shared/utils/EquipmentData";
+import { useEquipmentListQuery } from "@/shared/api/equipment.query";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface EquipmentFilterTabsProps {
   activeTab: string;
@@ -19,7 +20,6 @@ export function EquipmentFilterTabs({
   searchQuery,
   onSearchChange,
 }: EquipmentFilterTabsProps) {
-
   const { data, isLoading, error } = useEquipmentListQuery();
 
   const tabs = useMemo(() => {
@@ -30,14 +30,14 @@ export function EquipmentFilterTabs({
 
     // 상태별 매핑 (긴급 -> critical, 주의 -> warning, 정상 -> normal)
     const statusMap: Record<string, string> = {
-      긴급: 'critical',
-      주의: 'warning',
-      정상: 'normal',
+      긴급: "critical",
+      주의: "warning",
+      정상: "normal",
     };
 
     // 탭 배열 생성
     return [
-      { id: 'all', label: '전체', count: totalCount },
+      { id: "all", label: "전체", count: totalCount },
       ...equipmentData.map((item) => ({
         id: statusMap[item.name] || item.name,
         label: item.name,
@@ -46,45 +46,59 @@ export function EquipmentFilterTabs({
     ];
   }, [data]);
 
-    
-  if (isLoading) return <div>로딩중...</div>;
+  if (isLoading) {
+    return (
+      <section className="p-8">
+        <div className="bg-card rounded-xl border border-border p-6">
+          <div className="flex items-center gap-2">
+            {/* 탭 버튼 스켈레톤 (4개) */}
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className="h-9 w-20 rounded-lg" />
+            ))}
+            <div className="flex-1" />
+            {/* 검색창 스켈레톤 */}
+            <Skeleton className="h-10 w-64 rounded-md" />
+          </div>
+        </div>
+      </section>
+    );
+  }
   if (error) return <div>데이터를 불러올 수 없습니다.</div>;
-  
 
   return (
-    <section className='p-8'>
-    <div className="bg-card rounded-xl border border-border p-6">
-      <div className="flex items-center gap-2">
-        {/* 탭 버튼들 */}
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => onTabChange(tab.id)} // 클릭 시 상위 컴포넌트의 상태 변경
-            className={cn(
-              'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-              activeTab === tab.id
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-            )}
-          >
-            {tab.label} ({tab.count})
-          </button>
-        ))}
-        <div className="flex-1" />
+    <section className="p-8">
+      <div className="bg-card rounded-xl border border-border p-6">
+        <div className="flex items-center gap-2">
+          {/* 탭 버튼들 */}
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => onTabChange(tab.id)} // 클릭 시 상위 컴포넌트의 상태 변경
+              className={cn(
+                "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                activeTab === tab.id
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              )}
+            >
+              {tab.label} ({tab.count})
+            </button>
+          ))}
+          <div className="flex-1" />
 
-        {/* 검색 입력창 */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="설비 검색..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="w-64 h-9 pl-9 pr-4 bg-background border border-input rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-          />
+          {/* 검색 입력창 */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="설비 검색..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="w-64 h-9 pl-9 pr-4 bg-background border border-input rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+          </div>
         </div>
       </div>
-    </div>
     </section>
   );
 }
