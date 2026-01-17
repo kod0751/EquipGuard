@@ -102,17 +102,17 @@ EquipGuard/
 #### 1단계: 이진 분류 (고장 여부 예측)
 - **알고리즘**: Random Forest
 - **목적**: 설비의 고장 발생 확률 예측
-- **출력**: 정상(0) 또는 고장 가능성(1)
+- **출력**: 고장확률 예측 (ex: 0.56)
 
 #### 2단계: 다중 분류 (고장 유형 예측)
 - **알고리즘**: LightGBM
 - **조건**: 1단계에서 일정 확률 이상의 고장 가능성이 감지된 경우 실행
-- **출력**: 5가지 고장 유형
-  - Heat Dissipation Failure (열 방출 불량)
-  - Power Failure (전력 문제)
-  - Overstrain Failure (과부하)
-  - Tool Wear Failure (공구 마모)
-  - Random Failure (무작위 고장)
+- **출력**: 5가지 고장 유형 중 가장 확률이 높은 TOP 2개의 유형 (ex: [{'type': 'PWF', 'probability': 100},{'type': 'TWF', 'probability': 0}]
+  - 열 방출 고장 (Heat Dissipation Failure, HDF)
+  - 전력 고장 (Power Failure, PWF)
+  - 과부하 고장 (Overstrain Failure, OSF)
+  - 공구 마모 (Tool Wear Failure, TWF)
+  - 랜덤 고장 (Random Failures, RNF)
 
 ### 모델 성능 최적화
 - **불균형 데이터 처리**: imbalanced-learn 라이브러리 활용
@@ -182,7 +182,6 @@ npm run dev
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:8080
 - ML API: http://localhost:8000
-- Production: https://equip-guard-pied.vercel.app
 
 ## 📡 API 명세
 
@@ -192,14 +191,12 @@ GET    /api/equipment          # 설비 목록 조회
 POST   /api/equipment          # 설비 추가
 GET    /api/equipment/{id}     # 설비 상세 조회
 PUT    /api/equipment/{id}     # 설비 수정 (예정)
-DELETE /api/equipment/{id}     # 설비 삭제 (예정)
+DELETE /api/equipment/{id}     # 설비 삭제
 ```
 
 ### ML API (FastAPI)
 ```
-POST   /predict/failure        # 고장 확률 예측
-POST   /predict/failure-type   # 고장 유형 예측
-GET    /health                 # 헬스 체크
+POST   /predict/failure        # 고장 확률, 고장 유형 예측
 ```
 
 ## 👥 팀 구성
