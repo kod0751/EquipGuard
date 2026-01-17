@@ -2,19 +2,18 @@
 
 > AI 기반 설비 고장 예측 시스템
 
-[![Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://equip-guard-pied.vercel.app)
-
 EquipGuard는 머신러닝을 활용하여 설비의 고장 확률과 고장 유형을 예측하는 웹 애플리케이션입니다. 실시간 센서 데이터를 기반으로 설비의 상태를 모니터링하고, 사전에 고장을 예측하여 예방 정비를 가능하게 합니다.
 
 ## 📋 목차
 
-- [주요 기능](#주요-기능)
-- [기술 스택](#기술-스택)
-- [프로젝트 구조](#프로젝트-구조)
-- [ML 모델 설명](#ml-모델-설명)
-- [설치 및 실행](#설치-및-실행)
-- [API 명세](#api-명세)
-- [팀 구성](#팀-구성)
+- [주요 기능](#-주요-기능)
+- [기술 스택](#-기술-스택)
+- [프로젝트 구조](#-프로젝트-구조)
+- [ML 모델 설명](#-ml-모델-설명)
+- [설치 및 실행](#-설치-및-실행)
+- [API 명세](#-api-명세)
+- [팀 구성](#-팀-구성)
+- [향후 계획](#-향후-계획)
 
 ## ✨ 주요 기능
 
@@ -38,31 +37,21 @@ EquipGuard는 머신러닝을 활용하여 설비의 고장 확률과 고장 유
 - **Styling**: Tailwind CSS 4.1.18, shadcn/ui
 - **State Management**: TanStack Query 5.90.16
 - **Data Visualization**: Recharts 3.6.0
-- **Form Management**: React Hook Form 7.70.0 + Zod 4.3.5
-- **Routing**: React Router DOM 7.11.0
 
 ### Backend
 - **Framework**: Spring Boot 3.2.5
 - **Language**: Java 17
 - **Database**: MongoDB
-- **Dependencies**: 
-  - Spring Web
-  - Spring Data MongoDB
-  - Lombok
-  - Jackson Databind
 
 ### Machine Learning
 - **Framework**: FastAPI 0.110.0
-- **Server**: Uvicorn 0.27.0
-- **ML Libraries**:
+- **ML Libraries**: 
   - scikit-learn 1.4.0
   - LightGBM 4.3.0
-  - imbalanced-learn 0.12.0
-- **Data Processing**: Pandas 2.2.0, NumPy 1.26.0
-- **Visualization**: Matplotlib 3.8.0, Seaborn 0.13.0
+  - imbalanced-learn (SMOTE) 0.12.0
+- **Data Processing**: Pandas, NumPy
 
 ### DevOps
-- **Deployment**: Vercel (Frontend)
 - **Version Control**: Git, GitHub
 
 ## 📁 프로젝트 구조
@@ -92,32 +81,46 @@ EquipGuard/
 
 ## 🤖 ML 모델 설명
 
-### 데이터셋
+### 1. 데이터셋
 - **출처**: [Kaggle - Machine Failure Predictions](https://www.kaggle.com/datasets/shashanknecrothapa/machine-failure-predictions)
-- **특징**: 설비 센서 데이터를 기반으로 한 고장 예측 데이터셋
-- **활용**: 범용 설비 데이터로 학습되어 다양한 산업군의 설비에 적용 가능
+- **특징**: 온도, RPM, 토크, 공구 마모도 등 5가지 핵심 데이터를 기반으로 함
+- **전처**: Temp_Diff(온도차), Power(출력) 등 도메인 지식을 반영한 파생 변수 생성
 
-### 2단계 예측 시스템
+### 2. 2단계 예측 시스템 (Hierarchical Prediction)
 
-#### 1단계: 이진 분류 (고장 여부 예측)
-- **알고리즘**: Random Forest
-- **목적**: 설비의 고장 발생 확률 예측
-- **출력**: 고장확률 예측 (ex: 0.56)
+1단계: 고장 탐지 모델 (Binary Classification)
+1단계 모델은 설비의 안전을 위해 '**실제 고장을 놓치지 않는 것** **(High Recall)**'에 최적화되었습니다.
 
-#### 2단계: 다중 분류 (고장 유형 예측)
-- **알고리즘**: LightGBM
-- **조건**: 1단계에서 일정 확률 이상의 고장 가능성이 감지된 경우 실행
-- **출력**: 5가지 고장 유형 중 가장 확률이 높은 TOP 2개의 유형 (ex: [{'type': 'PWF', 'probability': 100},{'type': 'TWF', 'probability': 0}]
-  - 열 방출 고장 (Heat Dissipation Failure, HDF)
-  - 전력 고장 (Power Failure, PWF)
-  - 과부하 고장 (Overstrain Failure, OSF)
-  - 공구 마모 (Tool Wear Failure, TWF)
-  - 랜덤 고장 (Random Failures, RNF)
+- 주요 지표: 고장(Failure) 클래스에 대해 **93%의 높은 재현율** **(Recall)** 을 달성하였습니다.
 
-### 모델 성능 최적화
-- **불균형 데이터 처리**: imbalanced-learn 라이브러리 활용
-- **하이퍼파라미터 튜닝**: GridSearch 및 Cross-Validation
-- **모델 저장**: joblib을 통한 모델 직렬화
+- 혼동 행렬(Confusion Matrix) 분석:
+
+  - 임계값(Threshold) 조정: 미세한 징후 포착을 위해 임계값을 0.2로 설정하였습니다.
+
+  - 실제 고장 68건 중 63건을 정확히 찾아내어 현장의 가동 중단 리스크를 최소화합니다.
+
+핵심 변수(Feature Importance):
+
+**Power**와 **Rotational speed**가 고장 예측에 가장 결정적인 기여를 하는 것으로 나타났습니다.
+
+2단계: 고장 원인 분석 모델 (Multi-class Classification)
+2단계 모델은 감지된 고장의 원인을 정확히 분류하여 신속한 정비를 지원합니다.
+
+- 주요 지표: 전체 정확도(Accuracy) 98% 및 매크로 평균 F1-score 0.98로 매우 정밀한 진단이 가능합니다.
+
+  - 유형별 성능:
+
+    - HDF, PWF: 100%의 분류 정확도를 보입니다.
+
+    - TWF, OSF: 각각 89%, 100%의 높은 재현율을 기록하며 원인 분석의 신뢰성을 확보했습니다.
+
+- 핵심 변수(Feature Importance):
+
+  - **tool_wear**가 원인 분류의 가장 중요한 변수로 작용하며, 그 뒤를 이어 rpm과 **Temp_Diff**가 주요 진단 근거로 활용됩니다.
+
+### 3. 모델 성능 최적화
+- **데이터 불균형 해결**: SMOTE (Synthetic Minority Over-sampling Technique)를 적용하여 현저히 적은 고장 데이터를 증강 학습
+- **모델 직렬화**: 학습된 모델은 joblib을 통해 객체화하여 실시간 추론(Inference) 환경에서 즉시 로드 가능
 
 ## 🚀 설치 및 실행
 
