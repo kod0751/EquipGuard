@@ -60,7 +60,6 @@ EquipGuard는 머신러닝을 활용하여 설비의 고장 확률과 고장 유
 EquipGuard/
 ├── frontend/          # React + TypeScript 프론트엔드
 │   ├── src/
-│   │   ├── components/
 │   │   ├── features/
 │   │   ├── shared/
 │   │   ├── routes/
